@@ -38,19 +38,20 @@ function App() {
   }, []);
 
   function addPlayer(){
-    // TODO - update with actual players
-    socketInstance.emit("ADD PLAYER", "Bob", player_id);
+    // TODO - update with actual player names
+    socketInstance.emit("ADD PLAYER", player_id, player_id);
+  }
+  
+  function startGame(){
     socketInstance.emit("START GAME");
   }
   
   function playCard(card_to_play){
-    console.log("Playing card" + card_to_play)
     socketInstance.emit("PLAY CARD", player_id, card_to_play)
   }
   
   function refreshBoard(){
     socketInstance.emit("GET BOARD STATE", player_id);
-    //socketInstance.emit("START GAME");
   }
 
   
@@ -58,7 +59,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Bluffstopp</h1>
-        <button onClick={() => addPlayer()}>Add players and start game</button>
+        <button onClick={() => addPlayer()}>Add players</button>
+        <button onClick={() => startGame()}>Start game</button>
         <button onClick={() => refreshBoard()}>Refresh board</button>
         <p>Players in the game: {players}</p>
         <p>Current player: {currentPlayerName}</p>
