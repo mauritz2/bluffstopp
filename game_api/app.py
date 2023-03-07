@@ -35,6 +35,14 @@ def play_card(player_id:str, card_str:str):
     board_state = get_board_state_for_player(player_id)
     emit("UPDATE BOARD STATE", board_state, to=request.sid)
 
+    print("\n\nHere is the board state")
+    print(board_state["playerHand"])
+    print("End of board state \n\n")
+
+    # 
+    # Getting the wrong data
+    # Sending it to the wrong requestor
+
 def broadcast_player_names():
     player_names = players_in_game.get_player_names()
     emit("UPDATE PLAYERS", player_names, broadcast=True)

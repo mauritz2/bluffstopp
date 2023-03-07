@@ -34,12 +34,13 @@ function App() {
       console.log(`connect_error due to ${err.message}`);
     });
       
-    socket.emit("ADD PLAYER", "Bob", "123");
-    //socket.emit("ADD PLAYER", "Bob", "123");
-    socket.emit("GET BOARD STATE", "123");
-
   }, []);
 
+  function addPlayer(){
+    // TODO - update with actual players
+    socketInstance.emit("ADD PLAYER", "Bob", "123");
+    socketInstance.emit("GET BOARD STATE", "123");
+  }
 
   function playCard(card_to_play){
     console.log("Playing card" + card_to_play)
@@ -50,7 +51,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Hello</h1>
+        <h1>Bluffstopp</h1>
+        <button onClick={() => addPlayer()}>Add Player "Bob"</button>
         <p>Players in the game: {players}</p>
         <p>Current player: {currentPlayerName}</p>
         <p>Your hand: {hand}</p>
