@@ -29,7 +29,7 @@ def get_board_state(player_id:str):
 def play_card(player_id:str, card_str:str):
     player = players_in_game.get_player_instance_by_id(player_id)
     player.play_card(card_str)
-    #turn_state.end_current_player_turn()
+    turn_state.end_current_player_turn()
 
     # TODO - break out update board state into separate func
     board_state = get_board_state_for_player(player_id)
@@ -39,9 +39,6 @@ def play_card(player_id:str, card_str:str):
     print(board_state["playerHand"])
     print("End of board state \n\n")
 
-    # 
-    # Getting the wrong data
-    # Sending it to the wrong requestor
 
 def broadcast_player_names():
     player_names = players_in_game.get_player_names()
