@@ -16,7 +16,6 @@ function App() {
   const [lastPlayedCard, setLastPlayedCard] = useState("")
   const [currentPlayerName, setCurrentPlayerName] = useState("")
 
-
   useEffect(() => {
 
     const socket = io("127.0.0.1:5000/", {
@@ -29,11 +28,13 @@ function App() {
       setPlayers(playerNames);
     });
 
-    socket.on("UPDATE BOARD STATE", (boardState) => {
-      console.log("UPDATING THE BOARD STATE")
-      setHand(boardState["playerHand"]);
-      setLastPlayedCard(boardState["lastPlayedCard"]);
-      setCurrentPlayerName(boardState["currentPlayerName"]);
+    socket.on("UPDATE PUBLIC BOARD STATE", (publicBoardState) => {
+      setLastPlayedCard(publicBoardState["lastPlayedCard"]);
+      setCurrentPlayerName(publicBoardState["currentPlayerName"]);
+    });
+
+    socket.on("UPDATE PRIVATE BOARD STATE", (privateBoardState) => {
+      setHand(privateBoardState["playerHand"]);
     });
   }, []);
 
@@ -44,6 +45,7 @@ function App() {
   
   function startGame(){
     socketInstance.emit("START GAME");
+    socketInstance.emit("GET PRIVATE BOARD STATE")
   }
   
   function playCard(card_to_play){
@@ -51,7 +53,8 @@ function App() {
   }
   
   function refreshBoard(){
-    socketInstance.emit("GET BOARD STATE", player_id);
+    socketInstance.emit("GET PUBLIC BOARD STATE", player_id);
+    socketInstance.emit("GET PRIVATE BOARD STATE", player_id);
   }
 
   

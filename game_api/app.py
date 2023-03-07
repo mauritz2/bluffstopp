@@ -1,9 +1,8 @@
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from game_api.global_game_components import players_in_game, deck, board, turn_state
-#from game_api.create_game_components import create_players_in_game, create_deck, create_board, create_turn_state
 from game_api.player import Player
-from game_api.board_state import get_board_state_for_player
+from game_api.board_state import get_public_board_state, get_private_board_state
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins=[], logger=True)
@@ -45,25 +44,30 @@ def remove_player(player_id:str):
 def start_game():
     print(f"\n\n At this point the turnstate player_ids are {turn_state.player_ids}")
     turn_state.start_turn()
-    # TODO - add logic for redirection here
+    # TODO - weird here that we only broadcast public game state? It's because private has to be requested
+    # Maybe there's a better way to do this - e.g. tie the player_id to a request.SID, but 
+    # haven't been able to make that work in the past. The request.SID just keeps changing
+    broadcast_public_game_state()
 
-@socketio.on("GET BOARD STATE")
+@socketio.on("GET PRIVATE BOARD STATE")
 def get_board_state(player_id:str):
-
-    print(f"\n\n At this point the turnstate current player is {turn_state.current_player_id}")
-
-    board_state = get_board_state_for_player(player_id)
-    emit("UPDATE BOARD STATE", board_state, to=request.sid)
+    board_state = get_public_board_state(player_id)
+    emit("UPDATE PRIVATE BOARD STATE", board_state, to=request.sid)
 
 @socketio.on("PLAY CARD")
 def play_card(player_id:str, card_str:str):
     player = players_in_game.get_player_instance_by_id(player_id)
     player.play_card(card_str)
     turn_state.end_current_player_turn()
-    # TODO - break out update board state into separate func
-    board_state = get_board_state_for_player(player_id)
-    emit("UPDATE BOARD STATE", board_state, to=request.sid)
+    # TODO - break out update board private state into separate func
+    board_state = get_private_board_state(player_id)
+    emit("UPDATE PRIVATE BOARD STATE", board_state, to=request.sid)
+    broadcast_public_game_state()
 
 def broadcast_player_names():
     player_names = players_in_game.get_player_names()
     emit("UPDATE PLAYERS", player_names, broadcast=True)
+
+def broadcast_public_game_state():
+    public_game_state = get_public_board_state()
+    emit("UPDATE PUBLIC BOARD STATE", public_game_state, broadcast=True)
