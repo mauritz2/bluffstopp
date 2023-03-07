@@ -7,6 +7,8 @@ class PlayersInGame:
        self.players = {}
     
     def add_player(self, player_id:str, player:"Player") -> None:
+        if player_id in self.players.keys():
+            raise ValueError("Adding player with already existing ID")
         self.players[player_id] = player
     
     def remove_player(self, player_id:str) -> None:
@@ -14,6 +16,9 @@ class PlayersInGame:
 
     def get_player_names(self):
         return [player.name for player in self.players.values()]
+    
+    def get_player_ids(self):
+        return list(self.players.keys())
 
     def get_player_instance_by_id(self, player_id:str):
         return self.players[player_id]

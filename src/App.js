@@ -1,15 +1,21 @@
 import React, { useState, useEffect} from 'react';
 import './App.css';
 import { io } from "socket.io-client";
+import * as Cookies from "./lib/cookies";
 import PlayerHand from "./components/PlayerHand"
 
 function App() {
+
+  Cookies.createUUIDandSetInCookieIfDoesNotExist();
+  const player_id = Cookies.getUUIDFromCookie();
+  console.log(player_id);
 
   const [socketInstance, setSocketInstance] = useState("");
   const [players, setPlayers] = useState([])
   const [hand, setHand] = useState([])
   const [lastPlayedCard, setLastPlayedCard] = useState("")
   const [currentPlayerName, setCurrentPlayerName] = useState("")
+
 
   useEffect(() => {
 
@@ -29,22 +35,22 @@ function App() {
       setLastPlayedCard(boardState["lastPlayedCard"]);
       setCurrentPlayerName(boardState["currentPlayerName"]);
     });
-
-    socket.on("connect_error", (err) => {
-      console.log(`connect_error due to ${err.message}`);
-    });
-      
   }, []);
 
   function addPlayer(){
     // TODO - update with actual players
-    socketInstance.emit("ADD PLAYER", "Bob", "123");
-    socketInstance.emit("GET BOARD STATE", "123");
+    socketInstance.emit("ADD PLAYER", "Bob", player_id);
+    socketInstance.emit("START GAME");
   }
-
+  
   function playCard(card_to_play){
     console.log("Playing card" + card_to_play)
-    socketInstance.emit("PLAY CARD", "123", card_to_play)
+    socketInstance.emit("PLAY CARD", player_id, card_to_play)
+  }
+  
+  function refreshBoard(){
+    socketInstance.emit("GET BOARD STATE", player_id);
+    //socketInstance.emit("START GAME");
   }
 
   
@@ -52,7 +58,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Bluffstopp</h1>
-        <button onClick={() => addPlayer()}>Add Player "Bob"</button>
+        <button onClick={() => addPlayer()}>Add players and start game</button>
+        <button onClick={() => refreshBoard()}>Refresh board</button>
         <p>Players in the game: {players}</p>
         <p>Current player: {currentPlayerName}</p>
         <p>Your hand: {hand}</p>
