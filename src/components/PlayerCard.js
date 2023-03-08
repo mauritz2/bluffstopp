@@ -5,7 +5,7 @@ function PlayerCard({card, onPlay}) {
     return(
         <>
             {card}
-            <button onClick={() => onPlay(card)}></button>
+            <button onClick={() => onPlay(card)}>Play card</button>
         </>
     );
 }

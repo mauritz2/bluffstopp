@@ -34,6 +34,10 @@ function App() {
       setCurrentPlayerName(publicBoardState["currentPlayerName"]);
     });
 
+    socket.on("REQUEST PRIVATE BOARD STATE", () => {
+      socket.emit("GET PRIVATE BOARD STATE", player_id)
+    })
+
     socket.on("UPDATE PRIVATE BOARD STATE", (privateBoardState) => {
       setHand(privateBoardState["playerHand"]);
     });
@@ -68,7 +72,6 @@ function App() {
         <button onClick={() => refreshBoard()}>Refresh board</button>
         <p>Players in the game: {players}</p>
         <p>Current player: {currentPlayerName}</p>
-        <p>Your hand: {hand}</p>
         <p>Last card played: {lastPlayedCard}</p>
         <PlayerHand cards={hand} onPlay={playCard}/>
       </header>

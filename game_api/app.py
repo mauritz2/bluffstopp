@@ -48,6 +48,10 @@ def start_game():
     # Maybe there's a better way to do this - e.g. tie the player_id to a request.SID, but 
     # haven't been able to make that work in the past. The request.SID just keeps changing
     broadcast_public_game_state()
+    # TODO - evaluate whether this is needed - right now this is the only way to trigger a
+    # private board update from the server since only the client can generate the correct
+    # UUID/request.SID combo
+    emit("REQUEST PRIVATE BOARD STATE", broadcast=True)
 
 @socketio.on("GET PRIVATE BOARD STATE")
 def get_board_state(player_id:str):
