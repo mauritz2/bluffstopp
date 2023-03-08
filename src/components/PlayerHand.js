@@ -5,19 +5,25 @@ import CardClaimMenu from "./CardClaimMenu";
 function PlayerHand({cards, onPlay}){
 
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
+    const [cardBeingPlayed, setCardBeingPlayed] = useState("");
 
-    function showClaimMenu(){
+    function setCardToBePlayedAndShowClaimMenu(cardBeingPlayed){
+        setCardBeingPlayed(cardBeingPlayed);
         setShowCardClaimMenu(true);
+    }
+
+    function hideClaimMenul(){
+        setShowCardClaimMenu(false);
     }
 
     let card_list = []
     cards.forEach((card) => {
-        card_list.push(<div><PlayerCard card={card} onPlay={showClaimMenu}/></div>);
+        card_list.push(<div><PlayerCard card={card} onPlay={setCardToBePlayedAndShowClaimMenu}/></div>);
     });
     
     return(
         <>
-            {showCardClaimMenu == true ? <CardClaimMenu /> : ""}
+            {showCardClaimMenu == true ? <CardClaimMenu cardBeingPlayed={cardBeingPlayed} onCancel={hideClaimMenul} /> : ""}
             <div id="playerHand">{card_list}</div>
         </>
     );

@@ -24,5 +24,9 @@ code {
 }
 
 .radio-btn-group{
-  margin-top: 2em;
+  margin-top: 1em;
+}
+
+input{
+  margin: 0.5em;
 }
