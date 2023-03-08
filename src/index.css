@@ -12,7 +12,17 @@ code {
     monospace;
 }
 
+/* Player hand */
 #playerHand {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+/* Card claims menu */
+.radio-btn{
+  display: inline;
+}
+
+.radio-btn-group{
+  margin-top: 2em;
 }

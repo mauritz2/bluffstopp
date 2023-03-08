@@ -27,6 +27,7 @@ function App() {
     setSocketInstance(socket);
     
     socket.on("UPDATE PLAYERS", (playerNames) => {
+      console.log(playerNames);
       setPlayers(playerNames);
     });
 
@@ -71,7 +72,6 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
         <h1>Bluffstopp</h1>
         <button onClick={() => addPlayer()}>Add players</button>
         <button onClick={() => startGame()}>Start game</button>
@@ -84,7 +84,6 @@ function App() {
               lastPlayedCardClaimed={lastPlayedCardClaimed}
               callBluff={callBluff}/>
         <PlayerHand cards={hand} onPlay={playCard}/>
-      </header>
     </div>
   );
 }

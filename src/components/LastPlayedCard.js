@@ -4,6 +4,7 @@ function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastPlayedCardC
 
     let cardValueToDisplay = "";
     if(isLastCardHidden){
+        // TODO - currently "hidden" when no card has been played - fix
         cardValueToDisplay = "hidden";
     }
     else{
@@ -14,8 +15,8 @@ function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastPlayedCardC
 
     return(
         <>
-            <h3>Claimed: {lastPlayedCardClaimed}</h3>
-            <h3>Actual: {cardValueToDisplay}</h3>
+            <p>Claimed: {lastPlayedCardClaimed}</p>
+            <p>Actual: {cardValueToDisplay}</p>
             {isLastCardHidden === true ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
         </>
     );

@@ -1,16 +1,25 @@
-import React from "react";
-import { JsxElement } from "typescript";
+import React, { useState } from "react";
 import PlayerCard from "./PlayerCard";
+import CardClaimMenu from "./CardClaimMenu";
 
 function PlayerHand({cards, onPlay}){
 
+    const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
+
+    function showClaimMenu(){
+        setShowCardClaimMenu(true);
+    }
+
     let card_list = []
     cards.forEach((card) => {
-        card_list.push(<div><PlayerCard card={card} onPlay={onPlay}/></div>);
+        card_list.push(<div><PlayerCard card={card} onPlay={showClaimMenu}/></div>);
     });
     
     return(
-        <div id="playerHand">{card_list}</div>
+        <>
+            {showCardClaimMenu == true ? <CardClaimMenu /> : ""}
+            <div id="playerHand">{card_list}</div>
+        </>
     );
 }
 
