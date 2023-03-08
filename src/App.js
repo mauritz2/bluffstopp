@@ -3,25 +3,25 @@ import './App.css';
 import { io } from "socket.io-client";
 import * as Cookies from "./lib/cookies";
 import PlayerHand from "./components/PlayerHand"
+import LastPlayedCard from './components/LastPlayedCard';
 
 function App() {
 
   Cookies.createUUIDandSetInCookieIfDoesNotExist();
   const player_id = Cookies.getUUIDFromCookie();
-  console.log(player_id);
 
   const [socketInstance, setSocketInstance] = useState("");
-  const [players, setPlayers] = useState([])
-  const [hand, setHand] = useState([])
-  const [lastPlayedCard, setLastPlayedCard] = useState("")
-  const [currentPlayerName, setCurrentPlayerName] = useState("")
+  const [players, setPlayers] = useState([]);
+  const [hand, setHand] = useState([]);
+  const [lastPlayedCard, setLastPlayedCard] = useState("");
+  const [currentPlayerName, setCurrentPlayerName] = useState("");
+  const [isLastCardHidden, setIsLastCardHidden] = useState(false);
 
   useEffect(() => {
 
     const socket = io("ws://127.0.0.1:5000/", {
       transports: ["websocket"]
     });
-    //socket.emit("ADD PLAYER", player_id, player_id);
 
     setSocketInstance(socket);
     
@@ -32,6 +32,7 @@ function App() {
     socket.on("UPDATE PUBLIC BOARD STATE", (publicBoardState) => {
       setLastPlayedCard(publicBoardState["lastPlayedCard"]);
       setCurrentPlayerName(publicBoardState["currentPlayerName"]);
+      setIsLastCardHidden(publicBoardState["isLastCardHidden"]);
     });
 
     socket.on("REQUEST PRIVATE BOARD STATE", () => {
@@ -44,17 +45,17 @@ function App() {
   }, []);
 
   function addPlayer(){
-    // TODO - update with actual player names
+    // TODO - update with actual player names instead of player_id
     socketInstance.emit("ADD PLAYER", player_id, player_id);
   }
   
   function startGame(){
     socketInstance.emit("START GAME");
-    socketInstance.emit("GET PRIVATE BOARD STATE", player_id)
+    socketInstance.emit("GET PRIVATE BOARD STATE", player_id);
   }
   
   function playCard(card_to_play){
-    socketInstance.emit("PLAY CARD", player_id, card_to_play)
+    socketInstance.emit("PLAY CARD", player_id, card_to_play);
   }
   
   function refreshBoard(){
@@ -62,7 +63,10 @@ function App() {
     socketInstance.emit("GET PRIVATE BOARD STATE", player_id);
   }
 
-  
+  function callBluff(){
+    socketInstance.emit("CALL BLUFF", player_id);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -72,7 +76,7 @@ function App() {
         <button onClick={() => refreshBoard()}>Refresh board</button>
         <p>Players in the game: {players}</p>
         <p>Current player: {currentPlayerName}</p>
-        <p>Last card played: {lastPlayedCard}</p>
+        <LastPlayedCard lastPlayedCard={lastPlayedCard} isLastCardHidden={isLastCardHidden} callBluff={callBluff}/>
         <PlayerHand cards={hand} onPlay={playCard}/>
       </header>
     </div>

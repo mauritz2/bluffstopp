@@ -10,6 +10,7 @@ class TurnState:
         self.player_ids = []
         self.current_player_id = None
         self.player_with_turn_left_in_round = None
+        self.previous_player_id = None
 
     def add_player(self, player_id:str) -> None:
         if player_id in self.player_ids:
@@ -24,6 +25,7 @@ class TurnState:
         self.current_player_id = self.player_with_turn_left_in_round[0]
     
     def end_current_player_turn(self):
+        self.previous_player_id = self.current_player_id
         self.player_with_turn_left_in_round.remove(self.current_player_id)
         if len(self.player_with_turn_left_in_round) == 0:
             self.end_round()
@@ -34,3 +36,6 @@ class TurnState:
     
     def get_current_player_id(self):
         return self.current_player_id
+
+    def get_previous_player_id(self):
+        return self.previous_player_id

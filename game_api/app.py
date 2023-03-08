@@ -49,15 +49,26 @@ def get_board_state(player_id:str):
 @socketio.on("PLAY CARD")
 def play_card(player_id:str, card_str:str):
     logger.debug("Player {player_id} is playing the card {card_str}")
-    if is_invalid_player(player_id):
-        logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
-        raise ValueError("It's not your turn to play {player_id}")
+    # TODO - bring back for prod - commented out for easier testing
+    #if is_invalid_player(player_id):
+    #    logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
+    #    raise ValueError("It's not your turn to play {player_id}")
     player = players_in_game.get_player_instance_by_id(player_id)
     player.play_card(card_str)
     turn_state.end_current_player_turn()
     # TODO - break out update board private state into separate func, if possible
     board_state = get_private_board_state(player_id)
     emit("UPDATE PRIVATE BOARD STATE", board_state, to=request.sid)
+    broadcast_public_game_state()
+
+@socketio.on("CALL BLUFF")
+def call_bluff(player_id_calling_bluff):
+    #if is_invalid_player():
+        # if is_invalid_player(player_id):
+        # logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
+        # raise ValueError("It's not your turn to play {player_id}")
+    # Add assessment if bluff was correct or not and add penalties
+    board.show_card()
     broadcast_public_game_state()
 
 def broadcast_player_names() -> None:
