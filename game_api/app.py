@@ -51,7 +51,7 @@ def start_game():
 
 @socketio.on("GET PRIVATE BOARD STATE")
 def get_board_state(player_id:str):
-    board_state = get_public_board_state(player_id)
+    board_state = get_private_board_state(player_id)
     emit("UPDATE PRIVATE BOARD STATE", board_state, to=request.sid)
 
 @socketio.on("PLAY CARD")

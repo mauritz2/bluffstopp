@@ -18,9 +18,10 @@ function App() {
 
   useEffect(() => {
 
-    const socket = io("127.0.0.1:5000/", {
+    const socket = io("ws://127.0.0.1:5000/", {
       transports: ["websocket"]
     });
+    //socket.emit("ADD PLAYER", player_id, player_id);
 
     setSocketInstance(socket);
     
@@ -45,7 +46,7 @@ function App() {
   
   function startGame(){
     socketInstance.emit("START GAME");
-    socketInstance.emit("GET PRIVATE BOARD STATE")
+    socketInstance.emit("GET PRIVATE BOARD STATE", player_id)
   }
   
   function playCard(card_to_play){
@@ -53,7 +54,7 @@ function App() {
   }
   
   function refreshBoard(){
-    socketInstance.emit("GET PUBLIC BOARD STATE", player_id);
+    socketInstance.emit("GET PUBLIC BOARD STATE");
     socketInstance.emit("GET PRIVATE BOARD STATE", player_id);
   }
 
