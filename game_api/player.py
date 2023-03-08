@@ -26,6 +26,7 @@ class Player:
         card_to_play = self.cards_on_hand[card_str]
         self.board.add_card_to_board(card_to_play)
         del self.cards_on_hand[card_str]
+        self.board.set_claim_for_last_played_card(card_str)
 
     def serialize_hand(self) -> None:
         return list(self.cards_on_hand.keys())

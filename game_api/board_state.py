@@ -4,7 +4,8 @@ from game_api.app import players_in_game, turn_state, board
 def get_public_board_state():
     public_board_state = {}
     public_board_state["currentPlayerName"] = _get_current_player_name()
-    public_board_state["lastPlayedCard"] = _get_last_played_card_if_visible()
+    public_board_state["lastPlayedCardActual"] = _get_last_played_card_if_visible()
+    public_board_state["lastPlayedCardClaimed"] = board.get_claim_for_last_played_card()
     public_board_state["isLastCardHidden"] = board.get_is_last_card_hidden()
     return public_board_state
 

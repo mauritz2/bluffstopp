@@ -13,9 +13,10 @@ function App() {
   const [socketInstance, setSocketInstance] = useState("");
   const [players, setPlayers] = useState([]);
   const [hand, setHand] = useState([]);
-  const [lastPlayedCard, setLastPlayedCard] = useState("");
   const [currentPlayerName, setCurrentPlayerName] = useState("");
-  const [isLastCardHidden, setIsLastCardHidden] = useState(false);
+  const [lastPlayedCardActual, setLastPlayedCardActual] = useState("");
+  const [isLastCardHidden, setIsLastCardHidden] = useState(true);
+  const [lastPlayedCardClaimed, setLastPlayedCardClaimed] = useState("");
 
   useEffect(() => {
 
@@ -30,7 +31,8 @@ function App() {
     });
 
     socket.on("UPDATE PUBLIC BOARD STATE", (publicBoardState) => {
-      setLastPlayedCard(publicBoardState["lastPlayedCard"]);
+      setLastPlayedCardActual(publicBoardState["lastPlayedCardActual"]);
+      setLastPlayedCardClaimed(publicBoardState["lastPlayedCardClaimed"]);
       setCurrentPlayerName(publicBoardState["currentPlayerName"]);
       setIsLastCardHidden(publicBoardState["isLastCardHidden"]);
     });
@@ -76,7 +78,11 @@ function App() {
         <button onClick={() => refreshBoard()}>Refresh board</button>
         <p>Players in the game: {players}</p>
         <p>Current player: {currentPlayerName}</p>
-        <LastPlayedCard lastPlayedCard={lastPlayedCard} isLastCardHidden={isLastCardHidden} callBluff={callBluff}/>
+        <LastPlayedCard
+              lastPlayedCardActual={lastPlayedCardActual}
+              isLastCardHidden={isLastCardHidden}
+              lastPlayedCardClaimed={lastPlayedCardClaimed}
+              callBluff={callBluff}/>
         <PlayerHand cards={hand} onPlay={playCard}/>
       </header>
     </div>

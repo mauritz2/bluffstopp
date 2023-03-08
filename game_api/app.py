@@ -54,7 +54,7 @@ def play_card(player_id:str, card_str:str):
     #    logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
     #    raise ValueError("It's not your turn to play {player_id}")
     player = players_in_game.get_player_instance_by_id(player_id)
-    player.play_card(card_str)
+    player.play_card(card_str)    
     turn_state.end_current_player_turn()
     # TODO - break out update board private state into separate func, if possible
     board_state = get_private_board_state(player_id)
@@ -68,6 +68,7 @@ def call_bluff(player_id_calling_bluff):
         # logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
         # raise ValueError("It's not your turn to play {player_id}")
     # Add assessment if bluff was correct or not and add penalties
+    logger.debug("Showing the latest played card")
     board.show_card()
     broadcast_public_game_state()
 
