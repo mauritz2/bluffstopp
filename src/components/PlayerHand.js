@@ -23,7 +23,7 @@ function PlayerHand({cards, onPlay}){
     
     return(
         <>
-            {showCardClaimMenu == true ? <CardClaimMenu cardBeingPlayed={cardBeingPlayed} onCancel={hideClaimMenul} /> : ""}
+            {showCardClaimMenu === true ? <CardClaimMenu cardBeingPlayed={cardBeingPlayed} onPlay={onPlay} onCancel={hideClaimMenul} /> : ""}
             <div id="playerHand">{card_list}</div>
         </>
     );

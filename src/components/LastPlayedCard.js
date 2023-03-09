@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 
 function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastPlayedCardClaimed, callBluff}){
 
