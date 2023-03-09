@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import {Flash} from "@primer/react";
+import Constants from "../Constants";
 
 function CardClaimMenu({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     // Re-name to CardBluffSelector
@@ -6,10 +8,12 @@ function CardClaimMenu({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     // Should the radio button group be a seprate component for instance?
     // intrdocuce a firstCardPlayed bool to make it more clear rules are different for the first card?
     // Add flashing error messages when playing invalid card
+    // Make clear comparison for jack, queen, ace --> mapping here? 
 
     const [suitClaimed, setSuitClaimed] = useState("");
     const [valueClaimed, setValueClaimed] = useState("");
-    
+    const [errorMessage, setErrorMessage] = useState("");
+
     let [suitActual, valueActual] = splitSuitAndValue(cardActual);
 
     useEffect(() => {
@@ -78,30 +82,35 @@ function CardClaimMenu({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
 
     function isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed, lastCardSuitClaimed, lastCardValueClaimed){
         let isValid = false;
-        if (lastCardSuitClaimed == undefined || lastCardValueClaimed == undefined){
+        if (lastCardSuitClaimed === undefined || lastCardValueClaimed === undefined){
             // These values are undefined when no card has been played previously
             // TODO --> Refactor to isFirstCardPlayed() or make that a state 
             isValid = true;
         }
-        else if ((suitClaimed === lastCardSuitClaimed) && (parseInt(valueClaimed) > parseInt(lastCardValueClaimed))){
+        else if ((suitClaimed === lastCardSuitClaimed) && (Constants.CARD_VALUE_MAP[valueClaimed] > Constants.CARD_VALUE_MAP[lastCardValueClaimed])){
             isValid = true;
         }
         return isValid;
     }
 
+    function triggerTimedErrorFlash(cardClaimed, lastPlayedCardClaimed){
+        let errorMsg = "Playing " + cardClaimed + " is not a valid as a follow-up to " + lastPlayedCardClaimed + ". You have to play a card with a higher value in the same suit, or call the previous players bluff"
+        setErrorMessage(errorMsg);
+        //setTimeout(() => {
+        //    setErrorMessage("")}, 15000);
+        }
+
     function onSubmit(event){
         event.preventDefault();
         let cardClaimed = suitClaimed + " " + valueClaimed;
-        console.log(lastPlayedCardClaimed);
         let [lastCardSuitClaimed, lastCardValueClaimed] = splitSuitAndValue(lastPlayedCardClaimed);
-        console.log(lastPlayedCardClaimed);
-
+        
         if (isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed, lastCardSuitClaimed, lastCardValueClaimed)){
-            // TODO - introduce check here that you can't play something that differs from last played
             onPlay(cardClaimed);
+            setErrorMessage("")
         }
         else{
-            throw new Error("User tried to play " + cardClaimed + "which is not a valid card based on the last card played " + lastPlayedCardClaimed);
+            triggerTimedErrorFlash(cardClaimed, lastPlayedCardClaimed);
         }
     }
     
@@ -116,6 +125,7 @@ function CardClaimMenu({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
                     {cardRadioBtnGroup}
                 </div>
                 <input type="submit" value="Confirm" />
+                {errorMessage.length > 0 ? <Flash variant="danger">{errorMessage}</Flash> : "" }
                 <input type="button" value="Cancel" onClick={() => onCancel()} />
             </form>
         </>

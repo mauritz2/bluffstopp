@@ -4,8 +4,6 @@ import CardClaimMenu from "./CardClaimMenu";
 
 function PlayerHand({cards, onPlay, lastPlayedCardClaimed}){
 
-    console.log("PlayerHand.js " + lastPlayedCardClaimed);
-
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
     const [cardActual, setCardActual] = useState("");
 

@@ -4,6 +4,8 @@ import { io } from "socket.io-client";
 import * as Cookies from "./lib/cookies";
 import PlayerHand from "./components/PlayerHand"
 import LastPlayedCard from './components/LastPlayedCard';
+import {Box} from '@primer/react'
+import {ThemeProvider} from '@primer/react'
 
 function App() {
 
@@ -69,25 +71,24 @@ function App() {
     socketInstance.emit("CALL BLUFF", player_id);
   }
 
-  console.log("app.js " + lastPlayedCardClaimed);
-
   return (
-    <div className="App">
-        <h1>Bluffstopp</h1>
-        <button onClick={() => addPlayer()}>Add players</button>
-        <button onClick={() => startGame()}>Start game</button>
-        <button onClick={() => refreshGameState()}>Refresh game state</button>
-        <p>Players in the game: {players}</p>
-        <p>Current player: {currentPlayerName}</p>
-        <LastPlayedCard
-              lastPlayedCardActual={lastPlayedCardActual}
-              isLastCardHidden={isLastCardHidden}
-              lastPlayedCardClaimed={lastPlayedCardClaimed}
-              callBluff={callBluff}/>
-        <PlayerHand
-              cards={hand}
-              onPlay={playCard}
-              lastPlayedCardClaimed={lastPlayedCardClaimed}/>
+    <div>
+        <ThemeProvider>
+          <button onClick={() => addPlayer()}>Add players</button>
+          <button onClick={() => startGame()}>Start game</button>
+          <button onClick={() => refreshGameState()}>Refresh game state</button>
+          <p>Players in the game: {players}</p>
+          <p>Current player: {currentPlayerName}</p>
+          <LastPlayedCard
+                lastPlayedCardActual={lastPlayedCardActual}
+                isLastCardHidden={isLastCardHidden}
+                lastPlayedCardClaimed={lastPlayedCardClaimed}
+                callBluff={callBluff}/>
+          <PlayerHand
+                cards={hand}
+                onPlay={playCard}
+                lastPlayedCardClaimed={lastPlayedCardClaimed}/>
+    </ThemeProvider>
     </div>
   );
 }
