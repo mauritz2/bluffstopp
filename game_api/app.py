@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, emit
 
 from game_api.global_game_components import players_in_game, deck, board, turn_state
 from game_api.player import Player
-from game_api.board_state import get_public_board_state, get_private_board_state
+from game_api.game_state import get_public_game_state, get_private_game_state
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins=[], logger=True)
@@ -37,14 +37,14 @@ def start_game():
     # haven't been able to make that work in the past. The request.SID just keeps changing
     broadcast_public_game_state()
     # TODO - evaluate whether this is needed - right now this is the only way to trigger a
-    # private board update from the server since only the client can generate the correct
+    # private game update from the server since only the client can generate the correct
     # UUID/request.SID combo
-    emit("REQUEST PRIVATE BOARD STATE", broadcast=True)
+    emit("REQUEST PRIVATE GAME STATE", broadcast=True)
 
-@socketio.on("GET PRIVATE BOARD STATE")
-def get_board_state(player_id:str):
-    board_state = get_private_board_state(player_id)
-    emit("UPDATE PRIVATE BOARD STATE", board_state, to=request.sid)
+@socketio.on("GET PRIVATE GAME STATE")
+def get_game_state(player_id:str):
+    game_state = get_private_game_state(player_id)
+    emit("UPDATE PRIVATE GAME STATE", game_state, to=request.sid)
 
 @socketio.on("PLAY CARD")
 def play_card(player_id:str, card_str:str):
@@ -56,9 +56,9 @@ def play_card(player_id:str, card_str:str):
     player = players_in_game.get_player_instance_by_id(player_id)
     player.play_card(card_str)    
     turn_state.end_current_player_turn()
-    # TODO - break out update board private state into separate func, if possible
-    board_state = get_private_board_state(player_id)
-    emit("UPDATE PRIVATE BOARD STATE", board_state, to=request.sid)
+    # TODO - break out update private state into separate func, if possible
+    game_state = get_private_game_state(player_id)
+    emit("UPDATE PRIVATE GAME STATE", game_state, to=request.sid)
     broadcast_public_game_state()
 
 @socketio.on("CALL BLUFF")
@@ -77,8 +77,8 @@ def broadcast_player_names() -> None:
     emit("UPDATE PLAYERS", player_names, broadcast=True)
 
 def broadcast_public_game_state() -> None:
-    public_game_state = get_public_board_state()
-    emit("UPDATE PUBLIC BOARD STATE", public_game_state, broadcast=True)
+    public_game_state = get_public_game_state()
+    emit("UPDATE PUBLIC GAME STATE", public_game_state, broadcast=True)
 
 def is_invalid_player(player_id:str) -> bool:
     return True if player_id != turn_state.current_player_id else False

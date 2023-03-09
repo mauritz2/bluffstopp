@@ -38,11 +38,11 @@ function App() {
       setIsLastCardHidden(publicBoardState["isLastCardHidden"]);
     });
 
-    socket.on("REQUEST PRIVATE BOARD STATE", () => {
-      socket.emit("GET PRIVATE BOARD STATE", player_id)
+    socket.on("REQUEST PRIVATE GAME STATE", () => {
+      socket.emit("GET PRIVATE GAME STATE", player_id)
     })
 
-    socket.on("UPDATE PRIVATE BOARD STATE", (privateBoardState) => {
+    socket.on("UPDATE PRIVATE GAME STATE", (privateBoardState) => {
       setHand(privateBoardState["playerHand"]);
     });
   }, []);
@@ -54,7 +54,7 @@ function App() {
   
   function startGame(){
     socketInstance.emit("START GAME");
-    socketInstance.emit("GET PRIVATE BOARD STATE", player_id);
+    socketInstance.emit("GET PRIVATE GAME STATE", player_id);
   }
   
   function playCard(card_to_play){
@@ -62,8 +62,8 @@ function App() {
   }
   
   function refreshBoard(){
-    socketInstance.emit("GET PUBLIC BOARD STATE");
-    socketInstance.emit("GET PRIVATE BOARD STATE", player_id);
+    socketInstance.emit("GET PUBLIC GAME STATE");
+    socketInstance.emit("GET PRIVATE GAME STATE", player_id);
   }
 
   function callBluff(){

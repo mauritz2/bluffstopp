@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 
 function CardClaimMenu({cardBeingPlayed, onPlay, onCancel}){
-    // Need to add prop for what card was clicked so we can pre-select the correct card
-    // Add a state to show currently claim card to show currently played card
-    //const [claimedCard, setClaimedCard] = useState("");
+    // Re-name to CardBluffSelector
+    // Write tests for this component as it's a bit messy
+    // Should the radio button group be a seprate component for instance?
+
     const [claimedSuit, setClaimedSuit] = useState("");
     const [claimedValue, setClaimedValue] = useState("");
 
