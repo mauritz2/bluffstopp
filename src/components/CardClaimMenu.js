@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import {Flash} from "@primer/react";
 import Constants from "../Constants";
 
-function CardClaimMenu({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
-    // Re-name to CardBluffSelector
-    // Write tests for this component as it's a bit messy
-    // Should the radio button group be a seprate component for instance?
+function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
+    // Write tests for this component
+    // Should the radio button group be a seprate component?
     // intrdocuce a firstCardPlayed bool to make it more clear rules are different for the first card?
     // Add flashing error messages when playing invalid card
     // Make clear comparison for jack, queen, ace --> mapping here? 
@@ -132,4 +131,4 @@ function CardClaimMenu({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     );
 }
 
-export default CardClaimMenu;
+export default CardClaimSelector;

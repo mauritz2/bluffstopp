@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PlayerCard from "./PlayerCard";
-import CardClaimMenu from "./CardClaimMenu";
+import CardClaimSelector from "./CardClaimMenu";
 
 function PlayerHand({cards, onPlay, lastPlayedCardClaimed}){
-
+    // TODO - do the CardClaimSelector need to be tested here or could it be run from App.js?
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
     const [cardActual, setCardActual] = useState("");
 
@@ -29,7 +29,7 @@ function PlayerHand({cards, onPlay, lastPlayedCardClaimed}){
     return(
         <>
             {showCardClaimMenu === true ?
-                <CardClaimMenu
+                <CardClaimSelector
                     cardActual={cardActual}
                     onPlay={hideBluffMenuAndPlayCard}
                     onCancel={hideClaimMenul}
