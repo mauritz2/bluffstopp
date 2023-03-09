@@ -10,8 +10,6 @@ function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastPlayedCardC
         cardValueToDisplay = lastPlayedCardActual;
     }
 
-    console.log(lastPlayedCardActual);
-
     return(
         <>
             <p>Claimed: {lastPlayedCardClaimed}</p>
@@ -19,6 +17,6 @@ function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastPlayedCardC
             {isLastCardHidden === true ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
         </>
     );
-} 
+}
 
 export default LastPlayedCard;

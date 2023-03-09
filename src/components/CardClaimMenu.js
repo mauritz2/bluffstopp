@@ -48,7 +48,7 @@ function CardClaimMenu({cardBeingPlayed, onPlay, onCancel}){
                         name={groupName}
                         defaultChecked={isDefaultValue(value)}
                         onChange={() => setClaimedCardSuitAndValue(value)}/>
-                    <label for={value}>{value}</label>
+                    <label htmlFor={value}>{value}</label>
                 </div>);
         });
         return radioBtnGroup;
@@ -65,7 +65,8 @@ function CardClaimMenu({cardBeingPlayed, onPlay, onCancel}){
         }
     }
 
-    function onSubmit(){
+    function onSubmit(event){
+        event.preventDefault();
         let cardToPlay = claimedSuit + " " + claimedValue;
         onPlay(cardToPlay);
     }
@@ -73,7 +74,7 @@ function CardClaimMenu({cardBeingPlayed, onPlay, onCancel}){
     return(
         <>
             <p>Would you like to play this card as <strong>{claimedSuit} {claimedValue}</strong>?</p>
-            <form onSubmit={() => onSubmit()}>
+            <form onSubmit={(event) => onSubmit(event)}>
                 <div className="radio-btn-group">
                     {suitsRadioBtnGroup}
                 </div>

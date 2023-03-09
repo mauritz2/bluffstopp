@@ -27,23 +27,22 @@ function App() {
     setSocketInstance(socket);
     
     socket.on("UPDATE PLAYERS", (playerNames) => {
-      console.log(playerNames);
       setPlayers(playerNames);
     });
 
-    socket.on("UPDATE PUBLIC BOARD STATE", (publicBoardState) => {
-      setLastPlayedCardActual(publicBoardState["lastPlayedCardActual"]);
-      setLastPlayedCardClaimed(publicBoardState["lastPlayedCardClaimed"]);
-      setCurrentPlayerName(publicBoardState["currentPlayerName"]);
-      setIsLastCardHidden(publicBoardState["isLastCardHidden"]);
+    socket.on("UPDATE PUBLIC GAME STATE", (publicGameState) => {
+      setLastPlayedCardActual(publicGameState["lastPlayedCardActual"]);
+      setLastPlayedCardClaimed(publicGameState["lastPlayedCardClaimed"]);
+      setCurrentPlayerName(publicGameState["currentPlayerName"]);
+      setIsLastCardHidden(publicGameState["isLastCardHidden"]);
     });
 
     socket.on("REQUEST PRIVATE GAME STATE", () => {
       socket.emit("GET PRIVATE GAME STATE", player_id)
     })
 
-    socket.on("UPDATE PRIVATE GAME STATE", (privateBoardState) => {
-      setHand(privateBoardState["playerHand"]);
+    socket.on("UPDATE PRIVATE GAME STATE", (privateGameState) => {
+      setHand(privateGameState["playerHand"]);
     });
   }, []);
 
@@ -61,7 +60,7 @@ function App() {
     socketInstance.emit("PLAY CARD", player_id, card_to_play);
   }
   
-  function refreshBoard(){
+  function refreshGameState(){
     socketInstance.emit("GET PUBLIC GAME STATE");
     socketInstance.emit("GET PRIVATE GAME STATE", player_id);
   }
@@ -75,7 +74,7 @@ function App() {
         <h1>Bluffstopp</h1>
         <button onClick={() => addPlayer()}>Add players</button>
         <button onClick={() => startGame()}>Start game</button>
-        <button onClick={() => refreshBoard()}>Refresh board</button>
+        <button onClick={() => refreshGameState()}>Refresh game state</button>
         <p>Players in the game: {players}</p>
         <p>Current player: {currentPlayerName}</p>
         <LastPlayedCard

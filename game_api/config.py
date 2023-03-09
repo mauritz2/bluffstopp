@@ -1,3 +1,4 @@
+import logging, sys
 import enum
 
 NUM_STARTING_CARDS = 7
@@ -23,4 +24,7 @@ card_values = {
     "king":13,
     "ace":14,
 }
+
+logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 

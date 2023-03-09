@@ -7,12 +7,10 @@ from flask_socketio import SocketIO, emit
 from game_api.global_game_components import players_in_game, deck, board, turn_state
 from game_api.player import Player
 from game_api.game_state import get_public_game_state, get_private_game_state
+from game_api.config import logger
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins=[], logger=True)
-
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-logger = logging.getLogger(__name__)
 
 @socketio.on("ADD PLAYER")
 def add_player(player_name:str, player_id:str):
@@ -45,10 +43,11 @@ def start_game():
 def get_game_state(player_id:str):
     game_state = get_private_game_state(player_id)
     emit("UPDATE PRIVATE GAME STATE", game_state, to=request.sid)
+    logger.debug(f"Player {player_id} has the following cards {game_state['playerHand']}")
 
 @socketio.on("PLAY CARD")
 def play_card(player_id:str, card_str:str):
-    logger.debug("Player {player_id} is playing the card {card_str}")
+    logger.debug(f"Player {player_id} is playing the card {card_str}")
     # TODO - bring back for prod - commented out for easier testing
     #if is_invalid_player(player_id):
     #    logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
@@ -59,6 +58,7 @@ def play_card(player_id:str, card_str:str):
     # TODO - break out update private state into separate func, if possible
     game_state = get_private_game_state(player_id)
     emit("UPDATE PRIVATE GAME STATE", game_state, to=request.sid)
+    logger.debug(f"Player {player_id} has the following cards {game_state['playerHand']}")
     broadcast_public_game_state()
 
 @socketio.on("CALL BLUFF")

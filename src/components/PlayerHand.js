@@ -18,12 +18,17 @@ function PlayerHand({cards, onPlay}){
 
     let card_list = []
     cards.forEach((card) => {
-        card_list.push(<div><PlayerCard card={card} onPlay={setCardToBePlayedAndShowClaimMenu}/></div>);
+        card_list.push(<div><PlayerCard card={card} onPlay={setCardToBePlayedAndShowClaimMenu} showPlayBtn={!(showCardClaimMenu)} /></div>);
     });
+
+    function hideBluffMenuAndPlayCard(cardToPlay){
+        setShowCardClaimMenu(false);
+        onPlay(cardToPlay);
+    }
     
     return(
         <>
-            {showCardClaimMenu === true ? <CardClaimMenu cardBeingPlayed={cardBeingPlayed} onPlay={onPlay} onCancel={hideClaimMenul} /> : ""}
+            {showCardClaimMenu === true ? <CardClaimMenu cardBeingPlayed={cardBeingPlayed} onPlay={hideBluffMenuAndPlayCard} onCancel={hideClaimMenul} /> : ""}
             <div id="playerHand">{card_list}</div>
         </>
     );
