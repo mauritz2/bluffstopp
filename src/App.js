@@ -56,8 +56,8 @@ function App() {
     socketInstance.emit("GET PRIVATE GAME STATE", player_id);
   }
   
-  function playCard(card_to_play){
-    socketInstance.emit("PLAY CARD", player_id, card_to_play);
+  function playCard(cardActual, cardClaimed){
+    socketInstance.emit("PLAY CARD", player_id, cardActual, cardClaimed);
   }
   
   function refreshGameState(){

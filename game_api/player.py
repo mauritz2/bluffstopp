@@ -20,13 +20,12 @@ class Player:
         drawn_card = self.deck.draw_top_card()
         self.cards_on_hand[drawn_card.card_short] = drawn_card
  
-    def play_card(self, card_str:str) -> None:
-        if card_str not in list(self.cards_on_hand.keys()):
-            raise KeyError(f"You tried {card_str} which is not in the player's hand: {self.cards_on_hand.keys()}")
-        card_to_play = self.cards_on_hand[card_str]
+    def play_card(self, card_actual:str) -> None:
+        if card_actual not in list(self.cards_on_hand.keys()):
+            raise KeyError(f"You tried {card_actual} which is not in the player's hand: {self.cards_on_hand.keys()}")
+        card_to_play = self.cards_on_hand[card_actual]
         self.board.add_card_to_board(card_to_play)
-        del self.cards_on_hand[card_str]
-        self.board.set_claim_for_last_played_card(card_str)
+        del self.cards_on_hand[card_actual]
 
     def serialize_hand(self) -> None:
         return list(self.cards_on_hand.keys())

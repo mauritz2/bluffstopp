@@ -46,14 +46,15 @@ def get_game_state(player_id:str):
     logger.debug(f"Player {player_id} has the following cards {game_state['playerHand']}")
 
 @socketio.on("PLAY CARD")
-def play_card(player_id:str, card_str:str):
-    logger.debug(f"Player {player_id} is playing the card {card_str}")
+def play_card(player_id:str, card_actual:str, card_claimed:str):
+    logger.debug(f"Player {player_id} is playing the card {card_actual}")
     # TODO - bring back for prod - commented out for easier testing
     #if is_invalid_player(player_id):
     #    logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
     #    raise ValueError("It's not your turn to play {player_id}")
     player = players_in_game.get_player_instance_by_id(player_id)
-    player.play_card(card_str)    
+    player.play_card(card_actual)
+    board.set_claim_for_last_played_card(card_claimed)
     turn_state.end_current_player_turn()
     # TODO - break out update private state into separate func, if possible
     game_state = get_private_game_state(player_id)
@@ -62,7 +63,7 @@ def play_card(player_id:str, card_str:str):
     broadcast_public_game_state()
 
 @socketio.on("CALL BLUFF")
-def call_bluff(player_id_calling_bluff):
+def call_bluff(player_id_calling_bluff:str):
     #if is_invalid_player():
         # if is_invalid_player(player_id):
         # logger.error("Player {player_id} tried to play a card, but it wasn't their turn")

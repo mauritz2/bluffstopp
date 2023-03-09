@@ -67,8 +67,8 @@ function CardClaimMenu({cardBeingPlayed, onPlay, onCancel}){
 
     function onSubmit(event){
         event.preventDefault();
-        let cardToPlay = claimedSuit + " " + claimedValue;
-        onPlay(cardToPlay);
+        let cardClaimed = claimedSuit + " " + claimedValue;
+        onPlay(cardClaimed);
     }
     
     return(

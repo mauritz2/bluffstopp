@@ -5,10 +5,10 @@ import CardClaimMenu from "./CardClaimMenu";
 function PlayerHand({cards, onPlay}){
 
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
-    const [cardBeingPlayed, setCardBeingPlayed] = useState("");
+    const [cardActual, setCardActual] = useState("");
 
     function setCardToBePlayedAndShowClaimMenu(cardBeingPlayed){
-        setCardBeingPlayed(cardBeingPlayed);
+        setCardActual(cardBeingPlayed);
         setShowCardClaimMenu(true);
     }
 
@@ -21,14 +21,14 @@ function PlayerHand({cards, onPlay}){
         card_list.push(<div><PlayerCard card={card} onPlay={setCardToBePlayedAndShowClaimMenu} showPlayBtn={!(showCardClaimMenu)} /></div>);
     });
 
-    function hideBluffMenuAndPlayCard(cardToPlay){
+    function hideBluffMenuAndPlayCard(cardClaimed){
         setShowCardClaimMenu(false);
-        onPlay(cardToPlay);
+        onPlay(cardActual, cardClaimed);
     }
     
     return(
         <>
-            {showCardClaimMenu === true ? <CardClaimMenu cardBeingPlayed={cardBeingPlayed} onPlay={hideBluffMenuAndPlayCard} onCancel={hideClaimMenul} /> : ""}
+            {showCardClaimMenu === true ? <CardClaimMenu cardBeingPlayed={cardActual} onPlay={hideBluffMenuAndPlayCard} onCancel={hideClaimMenul} /> : ""}
             <div id="playerHand">{card_list}</div>
         </>
     );
