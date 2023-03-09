@@ -69,6 +69,8 @@ function App() {
     socketInstance.emit("CALL BLUFF", player_id);
   }
 
+  console.log("app.js " + lastPlayedCardClaimed);
+
   return (
     <div className="App">
         <h1>Bluffstopp</h1>
@@ -82,7 +84,10 @@ function App() {
               isLastCardHidden={isLastCardHidden}
               lastPlayedCardClaimed={lastPlayedCardClaimed}
               callBluff={callBluff}/>
-        <PlayerHand cards={hand} onPlay={playCard}/>
+        <PlayerHand
+              cards={hand}
+              onPlay={playCard}
+              lastPlayedCardClaimed={lastPlayedCardClaimed}/>
     </div>
   );
 }

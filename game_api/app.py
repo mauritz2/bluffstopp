@@ -47,7 +47,7 @@ def get_game_state(player_id:str):
 
 @socketio.on("PLAY CARD")
 def play_card(player_id:str, card_actual:str, card_claimed:str):
-    logger.debug(f"Player {player_id} is playing the card {card_actual}")
+    logger.debug(f"Player {player_id} is playing the card {card_actual}, claiming that it is {card_claimed}")
     # TODO - bring back for prod - commented out for easier testing
     #if is_invalid_player(player_id):
     #    logger.error("Player {player_id} tried to play a card, but it wasn't their turn")

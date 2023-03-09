@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import PlayerCard from "./PlayerCard";
 import CardClaimMenu from "./CardClaimMenu";
 
-function PlayerHand({cards, onPlay}){
+function PlayerHand({cards, onPlay, lastPlayedCardClaimed}){
+
+    console.log("PlayerHand.js " + lastPlayedCardClaimed);
 
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
     const [cardActual, setCardActual] = useState("");
@@ -28,7 +30,12 @@ function PlayerHand({cards, onPlay}){
     
     return(
         <>
-            {showCardClaimMenu === true ? <CardClaimMenu cardBeingPlayed={cardActual} onPlay={hideBluffMenuAndPlayCard} onCancel={hideClaimMenul} /> : ""}
+            {showCardClaimMenu === true ?
+                <CardClaimMenu
+                    cardActual={cardActual}
+                    onPlay={hideBluffMenuAndPlayCard}
+                    onCancel={hideClaimMenul}
+                    lastPlayedCardClaimed={lastPlayedCardClaimed} /> : ""}
             <div id="playerHand">{card_list}</div>
         </>
     );
