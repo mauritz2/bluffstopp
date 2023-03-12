@@ -3,7 +3,7 @@ import './App.css';
 import { io } from "socket.io-client";
 import * as Cookies from "./lib/cookies";
 import PlayerHand from "./components/PlayerHand"
-import LastPlayedCard from './components/LastPlayedCard';
+import Board from './components/Board';
 import {ThemeProvider} from '@primer/react'
 
 function App() {
@@ -15,8 +15,8 @@ function App() {
   const [players, setPlayers] = useState([]);
   const [hand, setHand] = useState([]);
   const [currentPlayerName, setCurrentPlayerName] = useState("");
-  const [lastPlayedCardActual, setLastPlayedCardActual] = useState("");
-  const [isLastCardHidden, setIsLastCardHidden] = useState(true);
+  const [lastActualCard, setLastActualCard] = useState("");
+  const [isActualCardHidden, setIsActualCardHidden] = useState(true);
   const [lastDeclaredCard, setLastDeclaredCard] = useState("");
 
   useEffect(() => {
@@ -32,16 +32,18 @@ function App() {
     });
 
     socket.on("UPDATE PUBLIC GAME STATE", (publicGameState) => {
-      setLastPlayedCardActual(publicGameState["lastPlayedCardActual"]);
+      // Update lastPlayedCardActual to lastActualCard
+      setLastActualCard(publicGameState["lastPlayedCardActual"]);
       // Update lastPLayedCardClaimed to lastDeclaredCard in backend
       setLastDeclaredCard(publicGameState["lastPlayedCardClaimed"]);
       setCurrentPlayerName(publicGameState["currentPlayerName"]);
-      setIsLastCardHidden(publicGameState["isLastCardHidden"]);
+      // Update isLastCardHidden to isActualCardHidden
+      setIsActualCardHidden(publicGameState["isLastCardHidden"]);
     });
 
     socket.on("REQUEST PRIVATE GAME STATE", () => {
       socket.emit("GET PRIVATE GAME STATE", player_id)
-    })
+    });
 
     socket.on("UPDATE PRIVATE GAME STATE", (privateGameState) => {
       setHand(privateGameState["playerHand"]);
@@ -79,9 +81,9 @@ function App() {
           <button onClick={() => refreshGameState()}>Refresh game state</button>
           <p>Players in the game: {players}</p>
           <p>Current player: {currentPlayerName}</p>
-          <LastPlayedCard
-                lastPlayedCardActual={lastPlayedCardActual}
-                isLastCardHidden={isLastCardHidden}
+          <Board
+                lastActualCard={lastActualCard}
+                isActualCardHidden={isActualCardHidden}
                 lastDeclaredCard={lastDeclaredCard}
                 callBluff={callBluff}/>
           <PlayerHand
