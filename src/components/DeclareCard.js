@@ -1,49 +1,24 @@
 import { useState, useEffect } from "react";
 import {Flash} from "@primer/react";
 import Constants from "../Constants";
+import DeclareCardRadios from "./DeclareCardRadios";
 
-function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
+function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     const [suitClaimed, setSuitClaimed] = useState("");
     const [valueClaimed, setValueClaimed] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [suitActual, valueActual] = splitSuitAndValue(cardActual);
     const cardValues = (Object.keys(Constants.CARD_VALUE_MAP)); 
     const cardSuits = Constants.SUITS;
-    const suitsRadioBtnGroup = createRadioBtnGroup(Constants.SUITS, "cardSuits");
-    const cardRadioBtnGroup = createRadioBtnGroup(cardValues, "cardValues");
+    //const suitsRadioBtnGroup = createRadioBtnGroup(Constants.SUITS, "cardSuits");
+    //const cardRadioBtnGroup = createRadioBtnGroup(cardValues, "cardValues");
 
     useEffect(() => {
         setClaimedCardSuitAndValue(suitActual);
         setClaimedCardSuitAndValue(valueActual);
     }, []);
     
-    function createRadioBtnGroup(btnValues, groupName){
-        let radioBtnGroup = [];
-        btnValues.forEach((value) => {
-            radioBtnGroup.push(
-                <div className="radio-btn">
-                    <input
-                        type="radio"
-                        id={value}
-                        value={value}
-                        name={groupName}
-                        defaultChecked={isDefaultValue(value)}
-                        onChange={() => setClaimedCardSuitAndValue(value)}/>
-                    <label htmlFor={value}>{value}</label>
-                </div>);
-        });
-        return radioBtnGroup;
-    }
 
-    function isDefaultValue(radioBtnValue){
-        if(radioBtnValue === suitActual || radioBtnValue === valueActual)
-        {
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
     
     function setClaimedCardSuitAndValue(suitOrValue){
         if(cardSuits.includes(suitOrValue)){
@@ -104,19 +79,27 @@ function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}
     function triggerTimedErrorFlash(cardClaimed, lastPlayedCardClaimed){
         let errorMsg = "Playing " + cardClaimed + " is not a valid as a follow-up to " + lastPlayedCardClaimed + ". You have to play a card with a higher value in the same suit, or call the previous players bluff"
         setErrorMessage(errorMsg);
-        //setTimeout(() => {
-        //    setErrorMessage("")}, 15000);
+        setTimeout(() => {
+            setErrorMessage("")}, 15000);
         }
-    
+        
+    // {suitsRadioBtnGroup}
+    // {cardRadioBtnGroup}
+    //<RadioButtonGroup2 btnValues={Constants.SUITS} groupName={"cardSuits"} />
     return(
         <>
             <p>Would you like to play this card as <strong>{suitClaimed} {valueClaimed}</strong>?</p>
             <form onSubmit={(event) => onSubmit(event)}>
                 <div className="radio-btn-group">
-                    {suitsRadioBtnGroup}
+                    <DeclareCardRadios
+                        btnValues={Constants.SUITS}
+                        groupName={"cardSuits"}
+                        setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
+                        suitActual={suitActual}
+                        valueActual={valueActual} />
                 </div>
                 <div className="radio-btn-group">
-                    {cardRadioBtnGroup}
+                    
                 </div>
                 <input type="submit" value="Confirm" />
                 {errorMessage.length > 0 ? <Flash variant="danger">{errorMessage}</Flash> : "" }
@@ -126,4 +109,4 @@ function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}
     );
 }
 
-export default CardClaimSelector;
+export default DeclareCard;
