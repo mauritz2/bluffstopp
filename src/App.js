@@ -4,7 +4,6 @@ import { io } from "socket.io-client";
 import * as Cookies from "./lib/cookies";
 import PlayerHand from "./components/PlayerHand"
 import LastPlayedCard from './components/LastPlayedCard';
-import {Box} from '@primer/react'
 import {ThemeProvider} from '@primer/react'
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
   const [currentPlayerName, setCurrentPlayerName] = useState("");
   const [lastPlayedCardActual, setLastPlayedCardActual] = useState("");
   const [isLastCardHidden, setIsLastCardHidden] = useState(true);
-  const [lastPlayedCardClaimed, setLastPlayedCardClaimed] = useState("");
+  const [lastDeclaredCard, setLastDeclaredCard] = useState("");
 
   useEffect(() => {
 
@@ -34,7 +33,8 @@ function App() {
 
     socket.on("UPDATE PUBLIC GAME STATE", (publicGameState) => {
       setLastPlayedCardActual(publicGameState["lastPlayedCardActual"]);
-      setLastPlayedCardClaimed(publicGameState["lastPlayedCardClaimed"]);
+      // Update lastPLayedCardClaimed to lastDeclaredCard in backend
+      setLastDeclaredCard(publicGameState["lastPlayedCardClaimed"]);
       setCurrentPlayerName(publicGameState["currentPlayerName"]);
       setIsLastCardHidden(publicGameState["isLastCardHidden"]);
     });
@@ -58,8 +58,8 @@ function App() {
     socketInstance.emit("GET PRIVATE GAME STATE", player_id);
   }
   
-  function playCard(cardActual, cardClaimed){
-    socketInstance.emit("PLAY CARD", player_id, cardActual, cardClaimed);
+  function playCard(cardActual, cardDelared){
+    socketInstance.emit("PLAY CARD", player_id, cardActual, cardDelared);
   }
   
   function refreshGameState(){
@@ -82,12 +82,12 @@ function App() {
           <LastPlayedCard
                 lastPlayedCardActual={lastPlayedCardActual}
                 isLastCardHidden={isLastCardHidden}
-                lastPlayedCardClaimed={lastPlayedCardClaimed}
+                lastDeclaredCard={lastDeclaredCard}
                 callBluff={callBluff}/>
           <PlayerHand
                 cards={hand}
                 onPlay={playCard}
-                lastPlayedCardClaimed={lastPlayedCardClaimed}/>
+                lastDeclaredCard={lastDeclaredCard}/>
     </ThemeProvider>
     </div>
   );

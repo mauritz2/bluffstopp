@@ -1,5 +1,5 @@
 
-function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastPlayedCardClaimed, callBluff}){
+function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastDeclaredCard, callBluff}){
 
     let cardValueToDisplay = "";
     if(isLastCardHidden){
@@ -12,7 +12,7 @@ function LastPlayedCard({lastPlayedCardActual, isLastCardHidden, lastPlayedCardC
 
     return(
         <>
-            <p>Claimed: {lastPlayedCardClaimed}</p>
+            <p>Claimed: {lastDeclaredCard}</p>
             <p>Actual: {cardValueToDisplay}</p>
             {isLastCardHidden === true ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
         </>

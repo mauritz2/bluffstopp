@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PlayerCard from "./PlayerCard";
-import CardClaimSelector from "./CardClaimMenu";
+import DeclareCard from "./DeclareCard";
 
-function PlayerHand({cards, onPlay, lastPlayedCardClaimed}){
+function PlayerHand({cards, onPlay, lastDeclaredCard}){
     // TODO - do the CardClaimSelector need to be tested here or could it be run from App.js?
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
     const [cardActual, setCardActual] = useState("");
@@ -29,11 +29,11 @@ function PlayerHand({cards, onPlay, lastPlayedCardClaimed}){
     return(
         <>
             {showCardClaimMenu === true ?
-                <CardClaimSelector
+                <DeclareCard
                     cardActual={cardActual}
                     onPlay={hideBluffMenuAndPlayCard}
                     onCancel={hideClaimMenul}
-                    lastPlayedCardClaimed={lastPlayedCardClaimed} /> : ""}
+                    lastPlayedCardClaimed={lastDeclaredCard} /> : ""}
             <div id="playerHand">{card_list}</div>
         </>
     );
