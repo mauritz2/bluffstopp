@@ -3,53 +3,20 @@ import {Flash} from "@primer/react";
 import Constants from "../Constants";
 
 function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
-    // Write tests for this component
-    // Should the radio button group be a seprate component?
-    // intrdocuce a firstCardPlayed bool to make it more clear rules are different for the first card?
-    // Add flashing error messages when playing invalid card
-    // Make clear comparison for jack, queen, ace --> mapping here? 
-
     const [suitClaimed, setSuitClaimed] = useState("");
     const [valueClaimed, setValueClaimed] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-
-    let [suitActual, valueActual] = splitSuitAndValue(cardActual);
+    const [suitActual, valueActual] = splitSuitAndValue(cardActual);
+    const cardValues = (Object.keys(Constants.CARD_VALUE_MAP)); 
+    const cardSuits = Constants.SUITS;
+    const suitsRadioBtnGroup = createRadioBtnGroup(Constants.SUITS, "cardSuits");
+    const cardRadioBtnGroup = createRadioBtnGroup(cardValues, "cardValues");
 
     useEffect(() => {
         setClaimedCardSuitAndValue(suitActual);
         setClaimedCardSuitAndValue(valueActual);
     }, []);
     
-    const cardSuits = ["diamonds", "spades", "clovers", "hearts"];        
-    const cardValues = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
-
-    function splitSuitAndValue(suitAndValue){
-        // Todo - remove check for both undefined and null
-        if (suitAndValue === undefined || suitAndValue === null){
-            var [suit, value] = [undefined, undefined]
-        }
-        else{
-            var [suit, value] = suitAndValue.split(" ")
-        }
-        return [suit, value]
-    }
-
-    // TODO - should these be set as state? They should never update after initial render though
-    let suitsRadioBtnGroup = createRadioBtnGroup(cardSuits, "cardSuits");
-    let cardRadioBtnGroup = createRadioBtnGroup(cardValues, "cardValues");
-
-    function setClaimedCardSuitAndValue(suitOrValue){
-        if(cardSuits.includes(suitOrValue)){
-            setSuitClaimed(suitOrValue);
-        }
-        else if(cardValues.includes(suitOrValue)){
-            setValueClaimed(suitOrValue);
-        }
-        else{
-            throw new Error("The player is trying to claim to play " + suitOrValue + ", which is not a valid card suit or value")
-        }
-    }
-
     function createRadioBtnGroup(btnValues, groupName){
         let radioBtnGroup = [];
         btnValues.forEach((value) => {
@@ -69,7 +36,6 @@ function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}
     }
 
     function isDefaultValue(radioBtnValue){
-        // TODO - poor practice to reference global vars here - add in as params?
         if(radioBtnValue === suitActual || radioBtnValue === valueActual)
         {
             return true;
@@ -78,7 +44,50 @@ function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}
             return false;
         }
     }
+    
+    function setClaimedCardSuitAndValue(suitOrValue){
+        if(cardSuits.includes(suitOrValue)){
+            setSuitClaimed(suitOrValue);
+        }
+        else if(cardValues.includes(suitOrValue)){
+            setValueClaimed(suitOrValue);
+        }
+        else{
+            throw new Error("The player is trying to claim to play " + suitOrValue + ", which is not a valid card suit or value")
+        }
+    }
 
+    function splitSuitAndValue(suitAndValue){
+        let [suit, value] = [undefined, undefined]
+        if (!isFirstCardPlayed()){
+            [suit, value] = suitAndValue.split(" ")
+        }
+        return [suit, value]
+    }
+
+    function isFirstCardPlayed(){
+        if(lastPlayedCardClaimed == undefined || lastPlayedCardClaimed === null){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
+    function onSubmit(event){
+        event.preventDefault();
+        let cardClaimed = suitClaimed + " " + valueClaimed;
+        let [lastCardSuitClaimed, lastCardValueClaimed] = splitSuitAndValue(lastPlayedCardClaimed);
+        
+        if (isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed, lastCardSuitClaimed, lastCardValueClaimed)){
+            onPlay(cardClaimed);
+            setErrorMessage("")
+        }
+        else{
+            triggerTimedErrorFlash(cardClaimed, lastPlayedCardClaimed);
+        }
+    }
+    
     function isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed, lastCardSuitClaimed, lastCardValueClaimed){
         let isValid = false;
         if (lastCardSuitClaimed === undefined || lastCardValueClaimed === undefined){
@@ -98,20 +107,6 @@ function CardClaimSelector({cardActual, onPlay, onCancel, lastPlayedCardClaimed}
         //setTimeout(() => {
         //    setErrorMessage("")}, 15000);
         }
-
-    function onSubmit(event){
-        event.preventDefault();
-        let cardClaimed = suitClaimed + " " + valueClaimed;
-        let [lastCardSuitClaimed, lastCardValueClaimed] = splitSuitAndValue(lastPlayedCardClaimed);
-        
-        if (isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed, lastCardSuitClaimed, lastCardValueClaimed)){
-            onPlay(cardClaimed);
-            setErrorMessage("")
-        }
-        else{
-            triggerTimedErrorFlash(cardClaimed, lastPlayedCardClaimed);
-        }
-    }
     
     return(
         <>

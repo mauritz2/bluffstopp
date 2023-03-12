@@ -13,7 +13,8 @@ const Constants = {
         "queen":12,
         "king":13,
         "ace":14
-    }
+    },
+    SUITS: ["diamonds", "spades", "clovers", "hearts"]
   }
-  export default Constants
+  export default Constants;
 
