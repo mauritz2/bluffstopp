@@ -20,16 +20,10 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
 
     function setClaimedCardSuitAndValue(suitOrValue){
         if(Constants.CARD_SUITS.includes(suitOrValue)){
-            //setSuitClaimed(suitOrValue);
-            setCardDeclaredState({suit: suitOrValue, value: "ace"})
-            //setPerson({
-                //    ...person, // Copy the old fields
-                //    firstName: e.target.value // But override this one
-                //  });
+            setCardDeclaredState({...cardDeclaredState, suit: suitOrValue})
             }
         else if(Constants.CARD_VALUES.includes(suitOrValue)){
-            setCardDeclaredState({suit:"diamonds", value: suitOrValue})
-            //setValueClaimed(suitOrValue);
+            setCardDeclaredState({...cardDeclaredState, value: suitOrValue})
         }
         else{
             throw new Error("The player is trying to claim to play " + suitOrValue + ", which is not a valid card suit or value")
