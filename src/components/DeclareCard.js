@@ -4,23 +4,32 @@ import Constants from "../Constants";
 import DeclareCardRadios from "./DeclareCardRadios";
 
 function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
-    const [suitClaimed, setSuitClaimed] = useState("");
-    const [valueClaimed, setValueClaimed] = useState("");
+    //const [suitClaimed, setSuitClaimed] = useState("");
+    //const [valueClaimed, setValueClaimed] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [cardActualState, setCardActualState] = useState({});
+    const [cardDeclaredState, setCardDeclaredState] = useState({});
 
     useEffect(() => {
-        setCardActualState(cardActual);
+        // TODO - don't have to re-define the obj here again most likely
+        setCardActualState({"suit":cardActual.suit, "value":cardActual.value});
+        setCardDeclaredState(cardActual);
     }, []);
     
 
 
     function setClaimedCardSuitAndValue(suitOrValue){
         if(Constants.CARD_SUITS.includes(suitOrValue)){
-            setSuitClaimed(suitOrValue);
-        }
+            //setSuitClaimed(suitOrValue);
+            setCardDeclaredState({suit: suitOrValue, value: "ace"})
+            //setPerson({
+                //    ...person, // Copy the old fields
+                //    firstName: e.target.value // But override this one
+                //  });
+            }
         else if(Constants.CARD_VALUES.includes(suitOrValue)){
-            setValueClaimed(suitOrValue);
+            setCardDeclaredState({suit:"diamonds", value: suitOrValue})
+            //setValueClaimed(suitOrValue);
         }
         else{
             throw new Error("The player is trying to claim to play " + suitOrValue + ", which is not a valid card suit or value")
@@ -46,15 +55,15 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
 
     function onSubmit(event){
         event.preventDefault();
-        let cardClaimed = suitClaimed + " " + valueClaimed;
+        let cardClaimedStr = cardDeclaredState.suit + " " + cardDeclaredState.value;
         let [lastCardSuitClaimed, lastCardValueClaimed] = splitSuitAndValue(lastPlayedCardClaimed);
         
-        if (isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed, lastCardSuitClaimed, lastCardValueClaimed)){
-            onPlay(cardClaimed);
+        if (isFollowingSuitAndIncreasingValue(cardDeclaredState.suit, cardDeclaredState.value, lastCardSuitClaimed, lastCardValueClaimed)){
+            onPlay(cardClaimedStr);
             setErrorMessage("")
         }
         else{
-            triggerTimedErrorFlash(cardClaimed, lastPlayedCardClaimed);
+            triggerTimedErrorFlash(cardClaimedStr, lastPlayedCardClaimed);
         }
     }
     
@@ -80,7 +89,7 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
         
     return(
         <>
-            <p>Would you like to play this card as <strong>{suitClaimed} {valueClaimed}</strong>?</p>
+            <p>Would you like to play this card as <strong>{cardDeclaredState.suit} {cardDeclaredState.value}</strong>?</p>
             <form onSubmit={(event) => onSubmit(event)}>
                 <div className="radio-btn-group">
                     <DeclareCardRadios
