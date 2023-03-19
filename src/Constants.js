@@ -1,5 +1,5 @@
-const Constants = {
-    CARD_VALUE_MAP: {
+const Constants = new function() {
+    this.CARD_VALUE_MAP = {
         "2":2,
         "3":3,
         "4":4,
@@ -13,8 +13,8 @@ const Constants = {
         "queen":12,
         "king":13,
         "ace":14
-    },
-    SUITS: ["diamonds", "spades", "clovers", "hearts"]
+    };
+    this.CARD_VALUES = Object.keys(this.CARD_VALUE_MAP);
+    this.CARD_SUITS = ["diamonds", "spades", "clovers", "hearts"];
   }
   export default Constants;
-

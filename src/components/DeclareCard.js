@@ -8,23 +8,18 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     const [valueClaimed, setValueClaimed] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [suitActual, valueActual] = splitSuitAndValue(cardActual);
-    const cardValues = (Object.keys(Constants.CARD_VALUE_MAP)); 
-    const cardSuits = Constants.SUITS;
-    //const suitsRadioBtnGroup = createRadioBtnGroup(Constants.SUITS, "cardSuits");
-    //const cardRadioBtnGroup = createRadioBtnGroup(cardValues, "cardValues");
 
     useEffect(() => {
         setClaimedCardSuitAndValue(suitActual);
         setClaimedCardSuitAndValue(valueActual);
     }, []);
     
-
     
     function setClaimedCardSuitAndValue(suitOrValue){
-        if(cardSuits.includes(suitOrValue)){
+        if(Constants.CARD_SUITS.includes(suitOrValue)){
             setSuitClaimed(suitOrValue);
         }
-        else if(cardValues.includes(suitOrValue)){
+        else if(Constants.CARD_VALUES.includes(suitOrValue)){
             setValueClaimed(suitOrValue);
         }
         else{
@@ -83,16 +78,13 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
             setErrorMessage("")}, 15000);
         }
         
-    // {suitsRadioBtnGroup}
-    // {cardRadioBtnGroup}
-    //<RadioButtonGroup2 btnValues={Constants.SUITS} groupName={"cardSuits"} />
     return(
         <>
             <p>Would you like to play this card as <strong>{suitClaimed} {valueClaimed}</strong>?</p>
             <form onSubmit={(event) => onSubmit(event)}>
                 <div className="radio-btn-group">
                     <DeclareCardRadios
-                        btnValues={cardSuits}
+                        btnValues={Constants.CARD_SUITS}
                         groupName={"cardSuits"}
                         setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
                         suitActual={suitActual}
@@ -100,7 +92,7 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
                 </div>
                 <div className="radio-btn-group">
                 <DeclareCardRadios
-                        btnValues={cardValues}
+                        btnValues={Constants.CARD_VALUES}
                         groupName={"cardValues"}
                         setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
                         suitActual={suitActual}

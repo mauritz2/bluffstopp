@@ -23,8 +23,6 @@ function DeclareCardRadios({btnValues, groupName, setClaimedCardSuitAndValue, su
         return radioBtnGroup;
     }
 
-
-
     function isDefaultValue(radioBtnValue){
         if(radioBtnValue === suitActual || radioBtnValue === valueActual)
         {
@@ -35,17 +33,6 @@ function DeclareCardRadios({btnValues, groupName, setClaimedCardSuitAndValue, su
         }
     }
 
-    // Test remove this stuff
-    let testArr = [<h1>"Hello"</h1>];
-    //testArr.push()
-
-    let buffer = []
-
-    buffer.push(<div>A</div>);
-    buffer.push(<div>B</div>);
-    buffer.push(<div>C</div>);
-
-    // {radioBtnGroupArr}
     return(
         <>
             {radioBtnGroupArr}
