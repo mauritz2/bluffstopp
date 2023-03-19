@@ -3,7 +3,7 @@ import {Flash} from "@primer/react";
 import Constants from "../Constants";
 import DeclareCardRadios from "./DeclareCardRadios";
 
-function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
+function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
     const [errorMessage, setErrorMessage] = useState("");
     const [cardDeclaredState, setCardDeclaredState] = useState({});
 
@@ -33,7 +33,7 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     }
 
     function isFirstCardPlayed(){
-        if(lastPlayedCardClaimed == undefined || lastPlayedCardClaimed === null){
+        if(lastDeclaredCard === undefined || lastDeclaredCard === null){
             return true
         }
         else{
@@ -44,25 +44,26 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     function onSubmit(event){
         event.preventDefault();
         let cardClaimedStr = cardDeclaredState.suit + " " + cardDeclaredState.value;
-        let [lastCardSuitClaimed, lastCardValueClaimed] = splitSuitAndValue(lastPlayedCardClaimed);
+        //let [lastCardSuitClaimed, lastCardValueClaimed] = splitSuitAndValue(lastDeclaredCard);
         
-        if (isFollowingSuitAndIncreasingValue(cardDeclaredState.suit, cardDeclaredState.value, lastCardSuitClaimed, lastCardValueClaimed)){
+        if (isFollowingSuitAndIncreasingValue(cardDeclaredState.suit, cardDeclaredState.value)){
             onPlay(cardClaimedStr);
             setErrorMessage("")
         }
         else{
-            triggerTimedErrorFlash(cardClaimedStr, lastPlayedCardClaimed);
+            triggerTimedErrorFlash(cardClaimedStr, lastDeclaredCard);
         }
     }
     
-    function isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed, lastCardSuitClaimed, lastCardValueClaimed){
+    function isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed){
         let isValid = false;
-        if (lastCardSuitClaimed === undefined || lastCardValueClaimed === undefined){
+        // Referencing global var here - OK?
+        if (lastDeclaredCard === undefined || lastDeclaredCard === undefined){
             // These values are undefined when no card has been played previously
             // TODO --> Refactor to isFirstCardPlayed() or make that a state 
             isValid = true;
         }
-        else if ((suitClaimed === lastCardSuitClaimed) && (Constants.CARD_VALUE_MAP[valueClaimed] > Constants.CARD_VALUE_MAP[lastCardValueClaimed])){
+        else if ((suitClaimed === lastDeclaredCard.suit) && (Constants.CARD_VALUE_MAP[valueClaimed] > Constants.CARD_VALUE_MAP[lastDeclaredCard.value])){
             isValid = true;
         }
         return isValid;

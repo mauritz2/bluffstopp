@@ -17,7 +17,7 @@ function App() {
   const [currentPlayerName, setCurrentPlayerName] = useState("");
   const [lastActualCard, setLastActualCard] = useState("");
   const [isActualCardHidden, setIsActualCardHidden] = useState(true);
-  const [lastDeclaredCard, setLastDeclaredCard] = useState("");
+  const [lastDeclaredCard, setLastDeclaredCard] = useState({});
 
   useEffect(() => {
 
@@ -32,13 +32,10 @@ function App() {
     });
 
     socket.on("UPDATE PUBLIC GAME STATE", (publicGameState) => {
-      // Update lastPlayedCardActual to lastActualCard
-      setLastActualCard(publicGameState["lastPlayedCardActual"]);
-      // Update lastPLayedCardClaimed to lastDeclaredCard in backend
-      setLastDeclaredCard(publicGameState["lastPlayedCardClaimed"]);
+      setLastActualCard(publicGameState["lastActualCard"]);
+      setLastDeclaredCard(publicGameState["lastDeclaredCard"]);
       setCurrentPlayerName(publicGameState["currentPlayerName"]);
-      // Update isLastCardHidden to isActualCardHidden
-      setIsActualCardHidden(publicGameState["isLastCardHidden"]);
+      setIsActualCardHidden(publicGameState["isActualCardHidden"]);
     });
 
     socket.on("REQUEST PRIVATE GAME STATE", () => {

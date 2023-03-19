@@ -4,9 +4,9 @@ from game_api.config import logging
 def get_public_game_state():
     public_game_state = {}
     public_game_state["currentPlayerName"] = _get_current_player_name()
-    public_game_state["lastPlayedCardActual"] = _get_last_played_card_if_visible()
-    public_game_state["lastPlayedCardClaimed"] = board.get_claim_for_last_played_card()
-    public_game_state["isLastCardHidden"] = board.get_is_last_card_hidden()
+    public_game_state["lastActualCard"] = _get_last_played_card_if_visible()
+    public_game_state["lastDeclaredCard"] = board.get_last_declared_card()
+    public_game_state["isActualCardHidden"] = board.get_is_last_card_hidden()
     logging.debug(f"Public game state {public_game_state}")
     return public_game_state
 

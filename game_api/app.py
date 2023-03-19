@@ -54,7 +54,7 @@ def play_card(player_id:str, card_actual:str, card_claimed:str):
     #    raise ValueError("It's not your turn to play {player_id}")
     player = players_in_game.get_player_instance_by_id(player_id)
     player.play_card(card_actual)
-    board.set_claim_for_last_played_card(card_claimed)
+    board.set_last_declared_card(card_claimed)
     turn_state.end_current_player_turn()
     # TODO - break out update private state into separate func, if possible
     game_state = get_private_game_state(player_id)

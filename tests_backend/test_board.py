@@ -40,10 +40,10 @@ def test_show_card(board):
     board.show_card()
     assert board.is_last_card_hidden == (not old_card_visibility)
 
-def test_set_claim_for_last_played_card(board):
-    board.set_claim_for_last_played_card("diamonds king")
-    assert board.last_played_card_claimed == "diamonds king"
+def test_set_last_declared_card(board):
+    board.set_last_declared_card("diamonds king")
+    assert board.last_declared_card == "diamonds king"
 
-def test_get_claim_for_last_played_card(board):
-    board.last_played_card_claimed = "diamonds king"
-    assert board.get_claim_for_last_played_card() == "diamonds king"
+def test_get_last_declared_card(board):
+    board.last_declared_card = "diamonds king"
+    assert board.get_last_declared_card() == {"suit":"diamonds", "value":"king"}
