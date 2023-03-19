@@ -92,14 +92,19 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
             <form onSubmit={(event) => onSubmit(event)}>
                 <div className="radio-btn-group">
                     <DeclareCardRadios
-                        btnValues={Constants.SUITS}
+                        btnValues={cardSuits}
                         groupName={"cardSuits"}
                         setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
                         suitActual={suitActual}
                         valueActual={valueActual} />
                 </div>
                 <div className="radio-btn-group">
-                    
+                <DeclareCardRadios
+                        btnValues={cardValues}
+                        groupName={"cardValues"}
+                        setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
+                        suitActual={suitActual}
+                        valueActual={valueActual} />
                 </div>
                 <input type="submit" value="Confirm" />
                 {errorMessage.length > 0 ? <Flash variant="danger">{errorMessage}</Flash> : "" }
