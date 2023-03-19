@@ -26,6 +26,8 @@ function PlayerHand({cards, onPlay, lastDeclaredCard}){
         onPlay(cardActual, cardClaimed);
     }
     
+    console.log("Last declared card is " + lastDeclaredCard.suit);
+
     return(
         <>
             {showCardClaimMenu === true ?
@@ -33,7 +35,7 @@ function PlayerHand({cards, onPlay, lastDeclaredCard}){
                     cardActual={cardActual}
                     onPlay={hideBluffMenuAndPlayCard}
                     onCancel={hideClaimMenul}
-                    lastPlayedCardClaimed={lastDeclaredCard} /> : ""}
+                    lastDeclaredCard={lastDeclaredCard} /> : ""}
             <div id="playerHand">{card_list}</div>
         </>
     );

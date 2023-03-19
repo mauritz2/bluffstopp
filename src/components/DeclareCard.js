@@ -5,33 +5,30 @@ import DeclareCardRadios from "./DeclareCardRadios";
 
 function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
     const [errorMessage, setErrorMessage] = useState("");
-    const [cardDeclaredState, setCardDeclaredState] = useState({});
+    const [cardDeclared, setCardDeclared] = useState({});
 
     useEffect(() => {
-        setCardDeclaredState(cardActual);
+        setCardDeclared(cardActual);
     }, []);
     
     function setDeclaredCard(suitOrValue){
         if(Constants.CARD_SUITS.includes(suitOrValue)){
-            setCardDeclaredState({...cardDeclaredState, suit: suitOrValue})
+            setCardDeclared({...cardDeclared, suit: suitOrValue})
             }
         else if(Constants.CARD_VALUES.includes(suitOrValue)){
-            setCardDeclaredState({...cardDeclaredState, value: suitOrValue})
+            setCardDeclared({...cardDeclared, value: suitOrValue})
         }
         else{
             throw new Error("The player is trying to claim to play " + suitOrValue + ", which is not a valid card suit or value")
         }
     }
 
-    function isFirstCardPlayed(){
-        return (lastDeclaredCard === undefined ? true : false);
-    }
-
     function onSubmit(event){
         event.preventDefault();
-        let cardClaimedStr = cardDeclaredState.suit + " " + cardDeclaredState.value;
+        // Refactor so cardDeclared is an obj
+        let cardClaimedStr = cardDeclared.suit + " " + cardDeclared.value;
         
-        if (isFollowingSuitAndIncreasingValue(cardDeclaredState.suit, cardDeclaredState.value)){
+        if (isFollowingSuitAndIncreasingValue(cardDeclared.suit, cardDeclared.value)){
             onPlay(cardClaimedStr);
             setErrorMessage("")
         }
@@ -42,19 +39,26 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
     
     function isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed){
         let isValid = false;
-        // Referencing global var here - OK?
-        console.log(lastDeclaredCard);
-        if (isFirstCardPlayed){
-            isValid = true;
-        }
-        else if ((suitClaimed === lastDeclaredCard.suit) && (Constants.CARD_VALUE_MAP[valueClaimed] > Constants.CARD_VALUE_MAP[lastDeclaredCard.value])){
+        if (isFirstCardPlayed() || isFollowingSuit(suitClaimed) && isIncreasingValue(valueClaimed)){
             isValid = true;
         }
         return isValid;
     }
 
-    function triggerTimedErrorFlash(cardClaimed, lastPlayedCardClaimed){
-        let errorMsg = "Playing " + cardClaimed + " is not a valid as a follow-up to " + lastPlayedCardClaimed + ". You have to play a card with a higher value in the same suit, or call the previous players bluff"
+    function isFirstCardPlayed(){
+        return (lastDeclaredCard === undefined ? true : false);
+    }
+
+    function isFollowingSuit(suitClaimed){
+        return (suitClaimed == lastDeclaredCard.suit ? true : false);
+    }
+
+    function isIncreasingValue(valueClaimed){
+        return (Constants.CARD_VALUE_MAP[valueClaimed] > Constants.CARD_VALUE_MAP[lastDeclaredCard.value] ? true : false);
+    }
+
+    function triggerTimedErrorFlash(cardClaimed, lastDeclaredCard){
+        let errorMsg = "Playing " + cardClaimed + " is not a valid as a follow-up to " + lastDeclaredCard.suit + " " + lastDeclaredCard.value +  ". You have to play a card with a higher value in the same suit, or call the previous players bluff"
         setErrorMessage(errorMsg);
         setTimeout(() => {
             setErrorMessage("")}, 15000);
@@ -62,7 +66,7 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
 
     return(
         <>
-            <p>Would you like to play this card as <strong>{cardDeclaredState.suit} {cardDeclaredState.value}</strong>?</p>
+            <p>Would you like to play this card as <strong>{cardDeclared.suit} {cardDeclared.value}</strong>?</p>
             <form onSubmit={(event) => onSubmit(event)}>
                 <div className="radio-btn-group">
                     <DeclareCardRadios
