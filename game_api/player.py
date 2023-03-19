@@ -1,5 +1,3 @@
-#from game_api.game_components import deck
-#from game_api.game_components import board
 from game_api.config import NUM_STARTING_CARDS
 
 class Player:
@@ -28,6 +26,13 @@ class Player:
         del self.cards_on_hand[card_actual]
 
     def serialize_hand(self) -> None:
-        return list(self.cards_on_hand.keys())
+        serialized_cards = []
+        for card in self.cards_on_hand.values():
+            print(card)
+            print(card.suit)
+            print(card.value)
+            serialized_card = {"suit":card.suit.value, "value":card.value}
+            serialized_cards.append(serialized_card)
+        return serialized_cards
 
 

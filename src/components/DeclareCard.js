@@ -14,7 +14,10 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
         setClaimedCardSuitAndValue(valueActual);
     }, []);
     
-    
+
+    // cardActual = {"suit":"clovers", "value":"6"}
+    // cardDeclared = {"suit":"clovers", "value":"6"}
+
     function setClaimedCardSuitAndValue(suitOrValue){
         if(Constants.CARD_SUITS.includes(suitOrValue)){
             setSuitClaimed(suitOrValue);
@@ -91,12 +94,12 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
                         valueActual={valueActual} />
                 </div>
                 <div className="radio-btn-group">
-                <DeclareCardRadios
-                        btnValues={Constants.CARD_VALUES}
-                        groupName={"cardValues"}
-                        setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
-                        suitActual={suitActual}
-                        valueActual={valueActual} />
+                    <DeclareCardRadios
+                            btnValues={Constants.CARD_VALUES}
+                            groupName={"cardValues"}
+                            setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
+                            suitActual={suitActual}
+                            valueActual={valueActual} />
                 </div>
                 <input type="submit" value="Confirm" />
                 {errorMessage.length > 0 ? <Flash variant="danger">{errorMessage}</Flash> : "" }

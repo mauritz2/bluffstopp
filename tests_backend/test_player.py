@@ -36,4 +36,4 @@ def test_serialize_hand(player):
     player.cards_on_hand["spades king"] = Card(suit=Suits.spades, value="king")
     player.cards_on_hand["spades queen"] = Card(suit=Suits.spades, value="queen")
     serialized_hand = player.serialize_hand()
-    assert serialized_hand == ["spades king", "spades queen"]
+    assert serialized_hand == [{"suit":"spades", "value":"king"}, {"suit":"spades", "value":"queen"}]

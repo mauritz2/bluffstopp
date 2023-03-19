@@ -5,7 +5,7 @@ import DeclareCard from "./DeclareCard";
 function PlayerHand({cards, onPlay, lastDeclaredCard}){
     // TODO - do the CardClaimSelector need to be tested here or could it be run from App.js?
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
-    const [cardActual, setCardActual] = useState("");
+    const [cardActual, setCardActual] = useState({});
 
     function setCardToBePlayedAndShowClaimMenu(cardBeingPlayed){
         setCardActual(cardBeingPlayed);
