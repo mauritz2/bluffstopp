@@ -4,7 +4,7 @@ function PlayerCard({card, onPlay, showPlayBtn}) {
 
     return(
         <>
-            {card}
+            {card.suit + " " + card.value}
             {showPlayBtn === true ? <button onClick={() => onPlay(card)}>Play card</button> : ""}
         </>
     );

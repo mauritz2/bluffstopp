@@ -61,7 +61,8 @@ function App() {
   }
   
   function playCard(cardActual, cardDelared){
-    socketInstance.emit("PLAY CARD", player_id, cardActual, cardDelared);
+    let cardStr = cardActual.suit + " " + cardActual.value;
+    socketInstance.emit("PLAY CARD", player_id, cardStr, cardDelared);
   }
   
   function refreshGameState(){

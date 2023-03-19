@@ -7,16 +7,13 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
     const [suitClaimed, setSuitClaimed] = useState("");
     const [valueClaimed, setValueClaimed] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [suitActual, valueActual] = splitSuitAndValue(cardActual);
+    const [cardActualState, setCardActualState] = useState({});
 
     useEffect(() => {
-        setClaimedCardSuitAndValue(suitActual);
-        setClaimedCardSuitAndValue(valueActual);
+        setCardActualState(cardActual);
     }, []);
     
 
-    // cardActual = {"suit":"clovers", "value":"6"}
-    // cardDeclared = {"suit":"clovers", "value":"6"}
 
     function setClaimedCardSuitAndValue(suitOrValue){
         if(Constants.CARD_SUITS.includes(suitOrValue)){
@@ -90,16 +87,16 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
                         btnValues={Constants.CARD_SUITS}
                         groupName={"cardSuits"}
                         setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
-                        suitActual={suitActual}
-                        valueActual={valueActual} />
+                        suitActual={cardActualState.suit}
+                        valueActual={cardActualState.value} />
                 </div>
                 <div className="radio-btn-group">
                     <DeclareCardRadios
                             btnValues={Constants.CARD_VALUES}
                             groupName={"cardValues"}
                             setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
-                            suitActual={suitActual}
-                            valueActual={valueActual} />
+                            suitActual={cardActualState.suit}
+                            valueActual={cardActualState.value} />
                 </div>
                 <input type="submit" value="Confirm" />
                 {errorMessage.length > 0 ? <Flash variant="danger">{errorMessage}</Flash> : "" }
