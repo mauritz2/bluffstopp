@@ -4,21 +4,15 @@ import Constants from "../Constants";
 import DeclareCardRadios from "./DeclareCardRadios";
 
 function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
-    //const [suitClaimed, setSuitClaimed] = useState("");
-    //const [valueClaimed, setValueClaimed] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [cardActualState, setCardActualState] = useState({});
     const [cardDeclaredState, setCardDeclaredState] = useState({});
 
     useEffect(() => {
-        // TODO - don't have to re-define the obj here again most likely
-        setCardActualState({"suit":cardActual.suit, "value":cardActual.value});
         setCardDeclaredState(cardActual);
     }, []);
     
 
-
-    function setClaimedCardSuitAndValue(suitOrValue){
+    function setDeclaredCard(suitOrValue){
         if(Constants.CARD_SUITS.includes(suitOrValue)){
             setCardDeclaredState({...cardDeclaredState, suit: suitOrValue})
             }
@@ -80,7 +74,7 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
         setTimeout(() => {
             setErrorMessage("")}, 15000);
         }
-        
+
     return(
         <>
             <p>Would you like to play this card as <strong>{cardDeclaredState.suit} {cardDeclaredState.value}</strong>?</p>
@@ -89,17 +83,15 @@ function DeclareCard({cardActual, onPlay, onCancel, lastPlayedCardClaimed}){
                     <DeclareCardRadios
                         btnValues={Constants.CARD_SUITS}
                         groupName={"cardSuits"}
-                        setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
-                        suitActual={cardActualState.suit}
-                        valueActual={cardActualState.value} />
+                        setDeclaredCard={setDeclaredCard}
+                        cardActual={cardActual} />
                 </div>
                 <div className="radio-btn-group">
                     <DeclareCardRadios
                             btnValues={Constants.CARD_VALUES}
                             groupName={"cardValues"}
-                            setClaimedCardSuitAndValue={setClaimedCardSuitAndValue}
-                            suitActual={cardActualState.suit}
-                            valueActual={cardActualState.value} />
+                            setDeclaredCard={setDeclaredCard}
+                            cardActual={cardActual} />
                 </div>
                 <input type="submit" value="Confirm" />
                 {errorMessage.length > 0 ? <Flash variant="danger">{errorMessage}</Flash> : "" }

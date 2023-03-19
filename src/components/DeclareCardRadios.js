@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-function DeclareCardRadios({btnValues, groupName, setClaimedCardSuitAndValue, suitActual, valueActual}){
+function DeclareCardRadios({btnValues, groupName, setDeclaredCard, cardActual}){
 
     var radioBtnGroupArr = createRadioBtnGroup(btnValues, groupName)
 
@@ -15,7 +15,7 @@ function DeclareCardRadios({btnValues, groupName, setClaimedCardSuitAndValue, su
                     value={value}
                     name={groupN}
                     defaultChecked={isDefaultValue(value)}
-                    onChange={() => setClaimedCardSuitAndValue(value)}/>
+                    onChange={() => setDeclaredCard(value)}/>
                 <label htmlFor={value}>{value}</label>
             </div>
             );
@@ -24,7 +24,7 @@ function DeclareCardRadios({btnValues, groupName, setClaimedCardSuitAndValue, su
     }
 
     function isDefaultValue(radioBtnValue){
-        if(radioBtnValue === suitActual || radioBtnValue === valueActual)
+        if(radioBtnValue === cardActual.suit || radioBtnValue === cardActual.value)
         {
             return true;
         }
