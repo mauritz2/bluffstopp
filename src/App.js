@@ -17,7 +17,7 @@ function App() {
   const [currentPlayerName, setCurrentPlayerName] = useState("");
   const [lastActualCard, setLastActualCard] = useState("");
   const [isActualCardHidden, setIsActualCardHidden] = useState(true);
-  const [lastDeclaredCard, setLastDeclaredCard] = useState({});
+  const [lastDeclaredCard, setLastDeclaredCard] = useState();
 
   useEffect(() => {
 
@@ -57,9 +57,13 @@ function App() {
     socketInstance.emit("GET PRIVATE GAME STATE", player_id);
   }
   
-  function playCard(cardActual, cardDelared){
-    let cardStr = cardActual.suit + " " + cardActual.value;
-    socketInstance.emit("PLAY CARD", player_id, cardStr, cardDelared);
+  function playCard(cardActual, cardDeclared){
+    console.log(cardDeclared);
+    let cardActualStr = cardActual.suit + " " + cardActual.value;
+    //let cardDeclaredStr = cardDeclared.suit + " " + cardDeclared.value;
+    let cardDeclaredStr = "diamonds ace";
+    debugger;
+    socketInstance.emit("PLAY CARD", player_id, cardActualStr, cardDeclaredStr);
   }
   
   function refreshGameState(){
@@ -70,6 +74,9 @@ function App() {
   function callBluff(){
     socketInstance.emit("CALL BLUFF", player_id);
   }
+
+  console.log(lastDeclaredCard);
+  debugger;
 
   return (
     <div>

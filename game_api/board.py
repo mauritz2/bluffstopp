@@ -29,6 +29,9 @@ class Board:
 
     def get_last_declared_card(self) -> str:
         # TODO - this format is now used by front-end --> make this the default format in entire board class?
-        suit, value = self.last_declared_card.split(" ")
-        declared_card = {"suit":suit, "value": value}
-        return declared_card
+        if self.last_declared_card == None:
+            return None
+        return None
+        #suit, value = self.last_declared_card.split(" ")
+        #declared_card = {"suit":suit, "value": value}
+        #return declared_card

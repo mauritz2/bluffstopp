@@ -12,7 +12,7 @@ function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, callBluff}
 
     return(
         <>
-            <p>Claimed: {lastDeclaredCard.suit + " " + lastDeclaredCard.value}</p>
+            <p>Claimed: {lastDeclaredCard?.suit + " " + lastDeclaredCard?.value}</p>
             <p>Actual: {cardValueToDisplay}</p>
             {isActualCardHidden === true ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
         </>

@@ -47,3 +47,7 @@ def test_set_last_declared_card(board):
 def test_get_last_declared_card(board):
     board.last_declared_card = "diamonds king"
     assert board.get_last_declared_card() == {"suit":"diamonds", "value":"king"}
+
+def test_get_last_declared_card_none(board):
+    board.last_declared_card = None
+    assert board.get_last_declared_card() == None

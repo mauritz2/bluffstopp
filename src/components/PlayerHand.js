@@ -26,8 +26,6 @@ function PlayerHand({cards, onPlay, lastDeclaredCard}){
         onPlay(cardActual, cardClaimed);
     }
     
-    console.log("Last declared card is " + lastDeclaredCard.suit);
-
     return(
         <>
             {showCardClaimMenu === true ?
