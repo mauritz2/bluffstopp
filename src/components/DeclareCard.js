@@ -11,7 +11,6 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
         setCardDeclaredState(cardActual);
     }, []);
     
-
     function setDeclaredCard(suitOrValue){
         if(Constants.CARD_SUITS.includes(suitOrValue)){
             setCardDeclaredState({...cardDeclaredState, suit: suitOrValue})
@@ -24,27 +23,13 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
         }
     }
 
-    function splitSuitAndValue(suitAndValue){
-        let [suit, value] = [undefined, undefined]
-        if (!isFirstCardPlayed()){
-            [suit, value] = suitAndValue.split(" ")
-        }
-        return [suit, value]
-    }
-
     function isFirstCardPlayed(){
-        if(lastDeclaredCard === undefined || lastDeclaredCard === null){
-            return true
-        }
-        else{
-            return false
-        }
+        return (lastDeclaredCard === undefined ? true : false);
     }
 
     function onSubmit(event){
         event.preventDefault();
         let cardClaimedStr = cardDeclaredState.suit + " " + cardDeclaredState.value;
-        //let [lastCardSuitClaimed, lastCardValueClaimed] = splitSuitAndValue(lastDeclaredCard);
         
         if (isFollowingSuitAndIncreasingValue(cardDeclaredState.suit, cardDeclaredState.value)){
             onPlay(cardClaimedStr);
@@ -58,9 +43,8 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
     function isFollowingSuitAndIncreasingValue(suitClaimed, valueClaimed){
         let isValid = false;
         // Referencing global var here - OK?
-        if (lastDeclaredCard === undefined || lastDeclaredCard === undefined){
-            // These values are undefined when no card has been played previously
-            // TODO --> Refactor to isFirstCardPlayed() or make that a state 
+        console.log(lastDeclaredCard);
+        if (isFirstCardPlayed){
             isValid = true;
         }
         else if ((suitClaimed === lastDeclaredCard.suit) && (Constants.CARD_VALUE_MAP[valueClaimed] > Constants.CARD_VALUE_MAP[lastDeclaredCard.value])){
