@@ -58,7 +58,8 @@ def play_card(player_id:str, card_actual:str, card_declared:str):
     # they know if they are the new player or not. Who is the current player 
     # is determined server side so the clients don't get to know any other player IDs
     # Could also be solved by preventing tapering with the cookie holding the player_id by signing the coookie somehow
-    emit("REQUEST PRIVATE GAME STATE", broadcast=True)
+    #emit("REQUEST PRIVATE GAME STATE", broadcast=True)
+    force_private_game_state_updates()
     broadcast_public_game_state()
 
 @socketio.on("CALL BLUFF")
@@ -72,13 +73,25 @@ def call_bluff(player_id_calling_bluff:str):
     board.show_card()
     broadcast_public_game_state()
 
+@socketio.on("PASS TURN")
+def pass_turn(player_id_passing:str):
+    #if is_invalid_player(player_id_passing):
+        # logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
+        # raise ValueError("It's not your turn to play {player_id}")
+    turn_state.end_current_player_turn()
+    force_private_game_state_updates()
+    broadcast_public_game_state()
+
 def broadcast_player_names() -> None:
     player_names = players_in_game.get_player_names()
     emit("UPDATE PLAYERS", player_names, broadcast=True)
 
 def broadcast_public_game_state() -> None:
     public_game_state = get_public_game_state()
-    emit("UPDATE PUBLIC GAME STATE", public_game_state, broadcast=True)
+    emit("UPDATE PUBLIC GAME STATE", public_game_state, broadcast=True) 
 
 def is_invalid_player(player_id:str) -> bool:
     return True if player_id != turn_state.current_player_id else False
+
+def force_private_game_state_updates():
+    emit("REQUEST PRIVATE GAME STATE", broadcast=True)

@@ -60,10 +60,14 @@ function App() {
   }
   
   function playCard(cardActual, cardDeclared){
-    console.log(cardDeclared);
     let cardActualStr = cardActual.suit + " " + cardActual.value;
     let cardDeclaredStr = cardDeclared.suit + " " + cardDeclared.value;
     socketInstance.emit("PLAY CARD", player_id, cardActualStr, cardDeclaredStr);
+  }
+
+  function passTurn(){
+    socketInstance.emit("PASS TURN", player_id);
+
   }
   
   function refreshGameState(){
@@ -88,8 +92,9 @@ function App() {
                 lastActualCard={lastActualCard}
                 isActualCardHidden={isActualCardHidden}
                 lastDeclaredCard={lastDeclaredCard}
+                isClientCurrentPlayer={isClientCurrentPlayer}
                 callBluff={callBluff}
-                isClientCurrentPlayer={isClientCurrentPlayer}/>
+                passTurn={passTurn}/>
           <PlayerHand
                 cards={hand}
                 onPlay={playCard}
