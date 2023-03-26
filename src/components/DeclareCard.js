@@ -38,7 +38,7 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
 
     function isFirstCardPlayed(){
         console.log(lastDeclaredCard);
-        return ((lastDeclaredCard === null || lastDeclaredCard === undefined) ? true : false);
+        return ((lastDeclaredCard === null) ? true : false);
     }
     
     function isFollowingSuit(suitClaimed){

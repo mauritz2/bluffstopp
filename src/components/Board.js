@@ -9,10 +9,9 @@ function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, callBluff}
     else{
         cardValueToDisplay = lastActualCard;
     }
-
     return(
         <>
-            <p>Claimed: {lastDeclaredCard?.suit + " " + lastDeclaredCard?.value}</p>
+            <p>Declared: {lastDeclaredCard === null ? "No card played yet" : lastDeclaredCard?.suit + " " + lastDeclaredCard?.value}</p>
             <p>Actual: {cardValueToDisplay}</p>
             {isActualCardHidden === true ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
         </>
