@@ -1,6 +1,3 @@
-import logging
-import sys
-
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
 
@@ -46,15 +43,15 @@ def get_game_state(player_id:str):
     logger.debug(f"Player {player_id} has the following cards {game_state['playerHand']}")
 
 @socketio.on("PLAY CARD")
-def play_card(player_id:str, card_actual:str, card_claimed:str):
-    logger.debug(f"Player {player_id} is playing the card {card_actual}, claiming that it is {card_claimed}")
+def play_card(player_id:str, card_actual:str, card_declared:str):
+    logger.debug(f"Player {player_id} is playing the card {card_actual}, claiming that it is {card_declared}")
     # TODO - bring back for prod - commented out for easier testing
     #if is_invalid_player(player_id):
     #    logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
     #    raise ValueError("It's not your turn to play {player_id}")
     player = players_in_game.get_player_instance_by_id(player_id)
     player.play_card(card_actual)
-    board.set_last_declared_card(card_claimed)
+    board.set_last_declared_card(card_declared)
     turn_state.end_current_player_turn()
     # TODO - break out update private state into separate func, if possible
     game_state = get_private_game_state(player_id)

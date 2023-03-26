@@ -21,7 +21,6 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
             setErrorMessage("")
         }
         else{
-            debugger;
             setDisallowedPlayMsg(cardDeclared, lastDeclaredCard);
         }
     }
@@ -29,11 +28,9 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
     function isAllowedPlay(suitClaimed, valueClaimed){
         let isValid = false;
         if (isFirstCardPlayed()){
-            debugger;
             isValid = true;
         }
         else if(isFollowingSuit(suitClaimed) && isIncreasingValue(valueClaimed)){
-            debugger;
             isValid = true;
         }
         return isValid;
@@ -41,8 +38,7 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
 
     function isFirstCardPlayed(){
         console.log(lastDeclaredCard);
-        debugger;
-        return (lastDeclaredCard === undefined ? true : false);
+        return ((lastDeclaredCard === null || lastDeclaredCard === undefined) ? true : false);
     }
     
     function isFollowingSuit(suitClaimed){

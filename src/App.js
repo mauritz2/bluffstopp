@@ -60,9 +60,7 @@ function App() {
   function playCard(cardActual, cardDeclared){
     console.log(cardDeclared);
     let cardActualStr = cardActual.suit + " " + cardActual.value;
-    //let cardDeclaredStr = cardDeclared.suit + " " + cardDeclared.value;
-    let cardDeclaredStr = "diamonds ace";
-    debugger;
+    let cardDeclaredStr = cardDeclared.suit + " " + cardDeclared.value;
     socketInstance.emit("PLAY CARD", player_id, cardActualStr, cardDeclaredStr);
   }
   
@@ -76,7 +74,6 @@ function App() {
   }
 
   console.log(lastDeclaredCard);
-  debugger;
 
   return (
     <div>

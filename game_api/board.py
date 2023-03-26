@@ -1,5 +1,4 @@
 from typing import Union
-
 from game_api.card import Card
 
 class Board:
@@ -31,7 +30,6 @@ class Board:
         # TODO - this format is now used by front-end --> make this the default format in entire board class?
         if self.last_declared_card == None:
             return None
-        return None
-        #suit, value = self.last_declared_card.split(" ")
-        #declared_card = {"suit":suit, "value": value}
-        #return declared_card
+        suit, value = self.last_declared_card.split(" ")
+        declared_card = {"suit":suit, "value": value}
+        return declared_card
