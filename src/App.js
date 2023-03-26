@@ -18,9 +18,10 @@ function App() {
   const [lastActualCard, setLastActualCard] = useState("");
   const [isActualCardHidden, setIsActualCardHidden] = useState(true);
   const [lastDeclaredCard, setLastDeclaredCard] = useState();
-
+  const [isClientCurrentPlayer, setIsClientCurrentPlayer] = useState();
+  
   useEffect(() => {
-
+    
     const socket = io("ws://127.0.0.1:5000/", {
       transports: ["websocket"]
     });
@@ -37,13 +38,14 @@ function App() {
       setCurrentPlayerName(publicGameState["currentPlayerName"]);
       setIsActualCardHidden(publicGameState["isActualCardHidden"]);
     });
-
+    
     socket.on("REQUEST PRIVATE GAME STATE", () => {
       socket.emit("GET PRIVATE GAME STATE", player_id)
     });
-
+    
     socket.on("UPDATE PRIVATE GAME STATE", (privateGameState) => {
       setHand(privateGameState["playerHand"]);
+      setIsClientCurrentPlayer(privateGameState["isClientCurrentPlayer"]);
     });
   }, []);
 
@@ -73,8 +75,6 @@ function App() {
     socketInstance.emit("CALL BLUFF", player_id);
   }
 
-  console.log(lastDeclaredCard);
-
   return (
     <div>
         <ThemeProvider>
@@ -83,11 +83,13 @@ function App() {
           <button onClick={() => refreshGameState()}>Refresh game state</button>
           <p>Players in the game: {players}</p>
           <p>Current player: {currentPlayerName}</p>
+          <p>Are you the current player? {String(isClientCurrentPlayer)}</p>
           <Board
                 lastActualCard={lastActualCard}
                 isActualCardHidden={isActualCardHidden}
                 lastDeclaredCard={lastDeclaredCard}
-                callBluff={callBluff}/>
+                callBluff={callBluff}
+                isClientCurrentPlayer={isClientCurrentPlayer}/>
           <PlayerHand
                 cards={hand}
                 onPlay={playCard}

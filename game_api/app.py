@@ -7,7 +7,7 @@ from game_api.game_state import get_public_game_state, get_private_game_state
 from game_api.config import logger
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins=[], logger=True)
+socketio = SocketIO(app, cors_allowed_origins=[])
 
 @socketio.on("ADD PLAYER")
 def add_player(player_name:str, player_id:str):
@@ -53,10 +53,12 @@ def play_card(player_id:str, card_actual:str, card_declared:str):
     player.play_card(card_actual)
     board.set_last_declared_card(card_declared)
     turn_state.end_current_player_turn()
-    # TODO - break out update private state into separate func, if possible
-    game_state = get_private_game_state(player_id)
-    emit("UPDATE PRIVATE GAME STATE", game_state, to=request.sid)
-    logger.debug(f"Player {player_id} has the following cards {game_state['playerHand']}")
+    
+    # Forces all clients to request the new game state - all players have to update so 
+    # they know if they are the new player or not. Who is the current player 
+    # is determined server side so the clients don't get to know any other player IDs
+    # Could also be solved by preventing tapering with the cookie holding the player_id by signing the coookie somehow
+    emit("REQUEST PRIVATE GAME STATE", broadcast=True)
     broadcast_public_game_state()
 
 @socketio.on("CALL BLUFF")

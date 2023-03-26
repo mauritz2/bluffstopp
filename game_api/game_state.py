@@ -8,14 +8,14 @@ def get_public_game_state():
     public_game_state["lastDeclaredCard"] = board.get_last_declared_card()
     public_game_state["isActualCardHidden"] = board.get_is_last_card_hidden()
     logging.debug(f"Public game state {public_game_state}")
+    # TODO - add cards left in deck
     return public_game_state
 
 def get_private_game_state(player_id:str):
     private_game_state = {}
     private_game_state["playerHand"] = _get_player_hand(player_id)
-    #private_board_state["isPlayerCurrentPlayer"] = True if turn_state.get_current_player_id() == player_id else False
+    private_game_state["isClientCurrentPlayer"] = True if turn_state.get_current_player_id() == player_id else False
     # TODO - add opponent cards left
-    # TODO - add cards left in deck
     logging.debug(f"Private game state {private_game_state}")
     return private_game_state
 

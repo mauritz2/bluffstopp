@@ -1,5 +1,5 @@
 
-function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, callBluff}){
+function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, callBluff, isClientCurrentPlayer}){
 
     let cardValueToDisplay = "";
     if(isActualCardHidden){
@@ -14,6 +14,7 @@ function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, callBluff}
             <p>Declared: {lastDeclaredCard === null ? "No card played yet" : lastDeclaredCard?.suit + " " + lastDeclaredCard?.value}</p>
             <p>Actual: {cardValueToDisplay}</p>
             {isActualCardHidden === true ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
+            {isClientCurrentPlayer === true ? <button>Pass</button> : ""}
         </>
     );
 }
