@@ -71,6 +71,7 @@ def call_bluff(player_id_calling_bluff:str):
     # Add assessment if bluff was correct or not and add penalties
     logger.debug("Showing the latest played card")
     board.show_card()
+    # TODO - Add end turn logic here
     broadcast_public_game_state()
 
 @socketio.on("PASS TURN")
