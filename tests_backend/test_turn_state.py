@@ -52,10 +52,11 @@ def test_end_current_player_turn_last_player(turn_state):
     assert len(turn_state.player_with_turn_left_in_round) == old_len
     assert turn_state.get_current_player_id() == "Player X" 
 
-def test_set_turn_order(turn_state):
-    turn_state.get_player_order("Player 3")
-    assert turn_state.player_with_turn_left_in_round == ["Player 3", "Player 4", "Player 1", "Player 2"]
+def test_get_new_player_order(turn_state):
+    new_player_order = turn_state.get_new_player_order("Player 3")
+    assert new_player_order == ["Player 3", "Player 4", "Player 1", "Player 2"]
 
 def test_set_turn_order_invalid_player(turn_state):
     with pytest.raises(ValueError):
-        turn_state.get_player_order("Invalid player name")
+        turn_state.get_new_player_order("Invalid player name")
+
