@@ -21,7 +21,7 @@ class Board:
 
     def show_card(self) -> None:
         self.is_last_card_hidden = False
-
+ 
     def set_last_declared_card(self, card_str:str) -> None:
         # TODO - should we validate here whether the card_str is valid?
         self.last_declared_card = card_str
@@ -33,3 +33,8 @@ class Board:
         suit, value = self.last_declared_card.split(" ")
         declared_card = {"suit":suit, "value": value}
         return declared_card
+    
+    def reset_board(self) -> None:
+        self.last_played_card_actual = None
+        self.last_declared_card = None
+        self.is_last_card_hidden = True
