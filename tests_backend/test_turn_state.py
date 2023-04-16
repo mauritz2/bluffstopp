@@ -10,12 +10,9 @@ def turn_state():
     turn_state.add_player("Player 4")
     return turn_state
 
-def test_get_player_ids(turn_state):
-    assert turn_state.get_player_ids() == ["Player 1", "Player 2", "Player 3", "Player 4"]
-
 def test_add_player(turn_state):
     turn_state.add_player("Alice")
-    assert "Alice" in turn_state.get_player_ids()
+    assert "Alice" in turn_state.player_ids
     assert "Alice" in turn_state.player_with_turn_left_in_round
 
 def test_add_duplicated_player(turn_state):
@@ -24,33 +21,33 @@ def test_add_duplicated_player(turn_state):
         turn_state.add_player("John Doe")
 
 def test_remove_player(turn_state):
-    assert "Player 1" in turn_state.get_player_ids()
+    assert "Player 1" in turn_state.player_ids
     turn_state.remove_player("Player 1")
-    assert "Player 1" not in turn_state.get_player_ids()
+    assert "Player 1" not in turn_state.player_ids
 
-def test_start_turn(turn_state):
-    assert turn_state.get_current_player_id() == None
-    turn_state.start_turn()
-    assert turn_state.get_current_player_id() == "Player 1"
+def test_start_next_turn(turn_state):
+    assert turn_state.current_player_id == None
+    turn_state.start_next_turn()
+    assert turn_state.current_player_id == "Player 1"
 
 
 def test_end_current_player_turn(turn_state):
-    turn_state.start_turn()
-    assert turn_state.get_current_player_id() == "Player 1"
+    turn_state.start_next_turn()
+    assert turn_state.current_player_id == "Player 1"
     old_len = len(turn_state.player_with_turn_left_in_round)
     turn_state.end_current_player_turn()
-    assert turn_state.get_current_player_id() == "Player 2"
+    assert turn_state.current_player_id == "Player 2"
     assert len(turn_state.player_with_turn_left_in_round) == old_len - 1 
 
 def test_end_current_player_turn_last_player(turn_state):
     turn_state.player_ids = ["Player X", "Player Y"]
     turn_state.player_with_turn_left_in_round = ["Player X", "Player Y"]
     old_len = len(turn_state.player_with_turn_left_in_round)
-    turn_state.start_turn()
+    turn_state.start_next_turn()
     turn_state.end_current_player_turn()
     turn_state.end_current_player_turn()
     assert len(turn_state.player_with_turn_left_in_round) == old_len
-    assert turn_state.get_current_player_id() == "Player X" 
+    assert turn_state.current_player_id == "Player X" 
 
 def test_get_new_player_order(turn_state):
     new_player_order = turn_state.get_new_player_order("Player 3")

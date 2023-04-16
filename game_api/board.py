@@ -3,6 +3,8 @@ from game_api.card import Card
 
 class Board:
     def __init__(self):
+        # TODO - continue here
+        # last_declared_card is a string, but last_played_card_actual is a card instance
         self.last_played_card_actual = None
         self.last_declared_card = None
         self.is_last_card_hidden = True
@@ -38,3 +40,10 @@ class Board:
         self.last_played_card_actual = None
         self.last_declared_card = None
         self.is_last_card_hidden = True
+
+    def is_bluff(self) -> bool:
+        if self.last_played_card_actual == None or self.last_declared_card == None:
+            raise ValueError(f"Trying to assess bluff without a played and declared card on the board")
+        print(self.last_played_card_actual)
+        print(self.last_declared_card)
+        return True if self.last_played_card_actual != self.last_declared_card else False

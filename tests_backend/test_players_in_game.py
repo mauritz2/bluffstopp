@@ -39,12 +39,6 @@ def test_get_player_names(players_in_game, john, susan):
     player_names = players_in_game.get_player_names()
     assert player_names == ["John", "Susan"]
 
-def test_get_player_ids(players_in_game, john, susan):
-    players_in_game.add_player(player_id=john.id, player=john)
-    players_in_game.add_player(player_id=susan.id, player=susan)
-    player_names = players_in_game.get_player_ids()
-    assert player_names == ["111", "222"]
-
 def test_get_player_instance_by_id(players_in_game, john):
     players_in_game.add_player(player_id=john.id, player=john)
     player_instance = players_in_game.get_player_instance_by_id(john.id)

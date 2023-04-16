@@ -14,9 +14,11 @@ class Player:
         for _ in range(NUM_STARTING_CARDS):
             self.draw_card()
 
-    def draw_card(self) -> None:
-        drawn_card = self.deck.draw_top_card()
-        self.cards_on_hand[drawn_card.card_short] = drawn_card
+    def draw_card(self, num_cards:int=1) -> None:
+        # TODO - rename draw_card to draw_cards
+        for _ in range(num_cards):
+            drawn_card = self.deck.draw_top_card()
+            self.cards_on_hand[drawn_card.card_short] = drawn_card
  
     def play_card(self, card_actual:str) -> None:
         if card_actual not in list(self.cards_on_hand.keys()):
@@ -28,9 +30,6 @@ class Player:
     def serialize_hand(self) -> None:
         serialized_cards = []
         for card in self.cards_on_hand.values():
-            print(card)
-            print(card.suit)
-            print(card.value)
             serialized_card = {"suit":card.suit.value, "value":card.value}
             serialized_cards.append(serialized_card)
         return serialized_cards

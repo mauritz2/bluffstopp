@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, emit
 from game_api.global_game_components import players_in_game, deck, board, turn_state
 from game_api.player import Player
 from game_api.game_state import get_public_game_state, get_private_game_state
-from game_api.config import logger
+from game_api.config import logger, NUM_PUNISHMENT_CARDS_TO_DRAW
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins=[])
@@ -26,7 +26,7 @@ def remove_player(player_id:str):
 
 @socketio.on("START GAME")
 def start_game():
-    turn_state.start_turn()
+    turn_state.start_next_turn()
     # TODO - weird here that we only broadcast public game state? It's because private has to be requested
     # Maybe there's a better way to do this - e.g. tie the player_id to a request.SID, but 
     # haven't been able to make that work in the past. The request.SID just keeps changing
@@ -52,6 +52,7 @@ def play_card(player_id:str, card_actual:str, card_declared:str):
     player = players_in_game.get_player_instance_by_id(player_id)
     player.play_card(card_actual)
     board.set_last_declared_card(card_declared)
+    turn_state.player_who_played_last_card = player_id
     turn_state.end_current_player_turn()
     
     # Forces all clients to request the new game state - all players have to update so 
@@ -71,7 +72,18 @@ def call_bluff(player_id_calling_bluff:str):
     # Add assessment if bluff was correct or not and add penalties
     logger.debug("Showing the latest played card")
     board.show_card()
-    # TODO - Add end turn logic here
+
+    if board.is_bluff():
+        print("It was a bluff!")
+    else:
+        logger.debug("It's not a bluff - punishing player who called the bluff")
+        print("It was not a bluff - punishing player who called the bluff")
+        player_calling_bluff = players_in_game.get_player_instance_by_id(player_id_calling_bluff)
+        player_calling_bluff.draw_card(NUM_PUNISHMENT_CARDS_TO_DRAW)
+        # Add in new turn logic here
+
+    #board.reset_board()
+    force_private_game_state_updates() 
     broadcast_public_game_state()
 
 @socketio.on("PASS TURN")
@@ -82,6 +94,15 @@ def pass_turn(player_id_passing:str):
     turn_state.end_current_player_turn()
     force_private_game_state_updates()
     broadcast_public_game_state()
+
+    if turn_state.did_all_players_pass():
+        logger.debug("All players passed - {turn_state.player_who_played_last_card} played highest one and will start")
+        turn_state.reset_player_turns(turn_state.player_who_played_last_card)
+        board.reset_board()
+        # TODO - is it necessary to update private game state here? Merge into one func if these
+        # are always used together?
+        force_private_game_state_updates()
+        broadcast_public_game_state()
 
 def broadcast_player_names() -> None:
     player_names = players_in_game.get_player_names()

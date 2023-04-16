@@ -22,6 +22,11 @@ def test_draw_card(player):
     player.draw_card()
     assert len(player.cards_on_hand) == old_hand_size + 1
 
+def test_draw_card_multiple_cards(player):
+    old_hand_size = len(player.cards_on_hand)
+    player.draw_card(num_cards=5)
+    assert len(player.cards_on_hand) == old_hand_size + 5
+
 def test_play_card(player):
     card_to_play = Card(suit=Suits.hearts, value="knight")
     player.cards_on_hand[card_to_play.card_short] = card_to_play 

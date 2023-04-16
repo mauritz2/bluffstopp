@@ -12,9 +12,7 @@ class TurnState:
         self.player_with_turn_left_in_round = None
         self.player_who_played_last_card = None
 
-    def get_player_ids(self) -> list[str]:
-        # TODO - remove this one and just reference player_ids
-        return self.player_ids
+    # Implenet @property for player_who_played_last_card
 
     def add_player(self, player_id:str) -> None:
         if player_id in self.player_ids:
@@ -25,31 +23,33 @@ class TurnState:
     def remove_player(self, player_id:str) -> None:
         self.player_ids.remove(player_id)
     
-    def start_turn(self):
+    def start_next_turn(self):
         self.current_player_id = self.player_with_turn_left_in_round[0]
     
     def end_current_player_turn(self):
+        # TODO - naming is a big confusing between start_next_turn
+        # and end_current_player_turn - fix
         self.player_with_turn_left_in_round.remove(self.current_player_id)
         if len(self.player_with_turn_left_in_round) == 0:
             self.reset_player_turns()
-        self.start_turn()
+        self.start_next_turn()
     
     def reset_player_turns(self, new_first_player=None) -> None:
-        if new_first_player:
-            self.player_with_turn_left_in_round = self.get_new_player_order(new_first_player=new_first_player)
-        else:
+        if new_first_player == None:
             self.player_with_turn_left_in_round = self.player_ids.copy()
-    
-    def get_current_player_id(self):
-        return self.current_player_id
-    
-    def set_player_who_played_last_card(self, player_that_played_last_card:str):
-        if self.is_invalid_player(player_that_played_last_card):
-            raise ValueError(f"{player_that_played_last_card} is not a valid player in the game")    
-        self.player_who_played_last_card = player_that_played_last_card
+        else:
+            self.player_with_turn_left_in_round = self.get_new_player_order(new_first_player=new_first_player)    
+
+    #def set_player_who_played_last_card(self, player_that_played_last_card:str):
+    #    if self.is_invalid_player(player_that_played_last_card):
+    #        raise ValueError(f"{player_that_played_last_card} is not a valid player in the game")    
+    #    self.player_who_played_last_card = player_that_played_last_card
 
     def is_invalid_player(self, player_name):
         return True if player_name not in self.player_ids else False
+
+    def did_all_players_pass(self):
+        return True if self.player_who_played_last_card == self.current_player_id else False
 
     def get_new_player_order(self, new_first_player:str) -> list[str]:
         if self.is_invalid_player(new_first_player):

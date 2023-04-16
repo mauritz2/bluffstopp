@@ -51,3 +51,19 @@ def test_get_last_declared_card(board):
 def test_get_last_declared_card_none(board):
     board.last_declared_card = None
     assert board.get_last_declared_card() == None
+
+def test_is_bluf_no_bluff(board):
+    board.last_played_card_actual = "diamonds king"
+    board.last_declared_card = "diamonds king"
+    assert board.is_bluff() == False
+
+def test_is_bluff_bluff(board):
+    board.last_played_card_actual = "diamonds king"
+    board.last_declared_card = "diamonds jack"
+    assert board.is_bluff() == True
+
+def test_is_bluff_bluff(board):
+    board.last_played_card_actual = None
+    board.last_declared_card = "diamonds jack"
+    with pytest.raises(ValueError):
+            board.is_bluff()
