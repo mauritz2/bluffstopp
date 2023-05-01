@@ -10,12 +10,36 @@ function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCu
     else{
         cardValueToDisplay = lastActualCard;
     }
+
+    console.log("Last declared card");
+    console.log(lastDeclaredCard);
+
+    function isPossibleToCallBluff(){
+        if(isActualCardHidden === true){
+            if(didClientPlayLastCard === false){
+                if(lastDeclaredCard != null){
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    function isPossibleToPass(){
+        if(isClientCurrentPlayer === true && lastDeclaredCard != null){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
     return(
         <>
             <p>Declared: {lastDeclaredCard === null ? "No card played yet" : lastDeclaredCard?.suit + " " + lastDeclaredCard?.value}</p>
             <p>Actual: {cardValueToDisplay}</p>
-            {(isActualCardHidden === true && didClientPlayLastCard === false) ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
-            {isClientCurrentPlayer === true ? <button onClick={() => passTurn()}>Pass</button> : ""}
+            {isPossibleToCallBluff() ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
+            {isPossibleToPass() ? <button onClick={() => passTurn()}>Pass</button> : ""}
         </>
     );
 }

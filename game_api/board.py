@@ -10,6 +10,9 @@ class Board:
         self.is_last_card_hidden = True
     
     def add_card_to_board(self, card:Card) -> None:
+        # TODO - the type hint here is false - it actually takes a str as input
+        if not isinstance(card, Card):
+            raise ValueError(f"Input card {card} is not a Card instance")
         self.last_played_card_actual = card
         self.is_last_card_hidden = True
 
@@ -26,6 +29,7 @@ class Board:
  
     def set_last_declared_card(self, card_str:str) -> None:
         # TODO - should we validate here whether the card_str is valid?
+        # TODO - would make more sense to set it as a Card Instance here as opposed to str
         self.last_declared_card = card_str
 
     def get_last_declared_card(self) -> str:

@@ -1,3 +1,4 @@
+from game_api.config import logger
 
 class TurnState:
     # TODO - revisit this class - it gets more complicated than necessary
@@ -11,6 +12,8 @@ class TurnState:
         self.current_player_id = None
         self.player_with_turn_left_in_round = None
         self.player_who_played_last_card = None
+        self.players_that_have_passed_this_round = []
+        self.is_first_play_of_game = True
 
     # Implenet @property for player_who_played_last_card
 
@@ -34,22 +37,38 @@ class TurnState:
             self.reset_player_turns()
         self.start_next_turn()
     
+    def pass_player(self, player_id:str) -> None:
+        if player_id in self.players_that_have_passed_this_round:
+            raise ValueError(f"Player {player_id} is passing, but has already passed")
+        self.players_that_have_passed_this_round.append(player_id)
+
     def reset_player_turns(self, new_first_player=None) -> None:
+        # TODO - rename to reset_for_new_round() ?
+        self.players_that_have_passed_this_round = []
+
         if new_first_player == None:
             self.player_with_turn_left_in_round = self.player_ids.copy()
         else:
             self.player_with_turn_left_in_round = self.get_new_player_order(new_first_player=new_first_player)    
 
-    #def set_player_who_played_last_card(self, player_that_played_last_card:str):
-    #    if self.is_invalid_player(player_that_played_last_card):
-    #        raise ValueError(f"{player_that_played_last_card} is not a valid player in the game")    
-    #    self.player_who_played_last_card = player_that_played_last_card
-
     def is_invalid_player(self, player_name):
         return True if player_name not in self.player_ids else False
 
     def did_all_players_pass(self):
-        return True if self.player_who_played_last_card == self.current_player_id else False
+        logger.warn(f"Passing players {self.players_that_have_passed_this_round}")
+        logger.warn(f"Passing that need to pass {self.player_ids}")
+        num_passes = len(self.players_that_have_passed_this_round)
+        num_required_passes = len(self.player_ids) - 1
+
+        if self.is_first_play_of_game:
+            # Since the game starts by turning up a random card not played by any player
+            # all players need to pass on the first round for the round to reset
+            num_required_passes += 1
+
+        if num_passes == num_required_passes:
+            return True
+        else:
+            return False
 
     def get_new_player_order(self, new_first_player:str) -> list[str]:
         if self.is_invalid_player(new_first_player):

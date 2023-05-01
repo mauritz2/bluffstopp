@@ -26,6 +26,11 @@ def remove_player(player_id:str):
 
 @socketio.on("START GAME")
 def start_game():
+    card_to_start_game = deck.draw_top_card()
+    logger.debug(f"Adding {card_to_start_game.card_short} to board")
+    board.add_card_to_board(card_to_start_game)
+    board.set_last_declared_card(card_to_start_game.card_short)
+
     turn_state.start_next_turn()
     # TODO - weird here that we only broadcast public game state? It's because private has to be requested
     # Maybe there's a better way to do this - e.g. tie the player_id to a request.SID, but 
@@ -44,6 +49,8 @@ def get_game_state(player_id:str):
 
 @socketio.on("PLAY CARD")
 def play_card(player_id:str, card_actual:str, card_declared:str):
+    turn_state.is_first_play_of_game = False
+    
     logger.debug(f"Player {player_id} is playing the card {card_actual}, claiming that it is {card_declared}")
     # TODO - bring back for prod - commented out for easier testing
     #if is_invalid_player(player_id):
@@ -70,6 +77,7 @@ def call_bluff(player_id_calling_bluff:str):
         # logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
         # raise ValueError("It's not your turn to play {player_id}")
     # Add assessment if bluff was correct or not and add penalties
+    # TODO - debug that the player turn doesn't always reset to the right person here
     logger.debug("Showing the latest played card")
     board.show_card()
 
@@ -92,21 +100,28 @@ def call_bluff(player_id_calling_bluff:str):
 
 @socketio.on("PASS TURN")
 def pass_turn(player_id_passing:str):
+    # TODO - this logic has to be re-built to keep a list of all passing players
+    # If the list is the same length as the total amount of players there's a reset
+    # TODO - implement so you can't pass on an empty board (in UI)
     #if is_invalid_player(player_id_passing):
         # logger.error("Player {player_id} tried to play a card, but it wasn't their turn")
         # raise ValueError("It's not your turn to play {player_id}")
-    turn_state.end_current_player_turn()
-    force_private_game_state_updates()
-    broadcast_public_game_state()
-
+    turn_state.pass_player(player_id_passing)
+    
     if turn_state.did_all_players_pass():
         logger.debug("All players passed - {turn_state.player_who_played_last_card} played highest one and will start")
+        turn_state.end_current_player_turn()
         turn_state.reset_player_turns(turn_state.player_who_played_last_card)
         board.reset_board()
         # TODO - is it necessary to update private game state here? Merge into one func if these
         # are always used together?
         force_private_game_state_updates()
         broadcast_public_game_state()
+    else:
+        turn_state.end_current_player_turn()
+        force_private_game_state_updates()
+        broadcast_public_game_state()
+
 
 def broadcast_player_names() -> None:
     player_names = players_in_game.get_player_names()
