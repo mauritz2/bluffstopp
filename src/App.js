@@ -19,7 +19,8 @@ function App() {
   const [isActualCardHidden, setIsActualCardHidden] = useState(true);
   const [lastDeclaredCard, setLastDeclaredCard] = useState();
   const [isClientCurrentPlayer, setIsClientCurrentPlayer] = useState();
-  
+  const [didClientPlayLastCard, setDidClientPlayLastCard] = useState();
+
   useEffect(() => {
     
     const socket = io("ws://127.0.0.1:5000/", {
@@ -37,6 +38,19 @@ function App() {
       setLastDeclaredCard(publicGameState["lastDeclaredCard"]);
       setCurrentPlayerName(publicGameState["currentPlayerName"]);
       setIsActualCardHidden(publicGameState["isActualCardHidden"]);
+
+      console.log("Start of if statement")
+      console.log(publicGameState["playerThatPlayedLastCard"])
+      console.log(player_id)
+
+      if(publicGameState["playerThatPlayedLastCard"] === player_id){
+        setDidClientPlayLastCard(true)
+      }
+      else{
+        setDidClientPlayLastCard(false)
+      }
+
+      console.log(didClientPlayLastCard)
     });
     
     socket.on("REQUEST PRIVATE GAME STATE", () => {
@@ -93,6 +107,7 @@ function App() {
                 isActualCardHidden={isActualCardHidden}
                 lastDeclaredCard={lastDeclaredCard}
                 isClientCurrentPlayer={isClientCurrentPlayer}
+                didClientPlayLastCard={didClientPlayLastCard}
                 callBluff={callBluff}
                 passTurn={passTurn}/>
           <PlayerHand

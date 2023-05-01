@@ -87,7 +87,6 @@ def call_bluff(player_id_calling_bluff:str):
     turn_state.reset_player_turns(new_first_player=player_starting_next_round)
     board.reset_board()
 
-    #board.reset_board()
     force_private_game_state_updates() 
     broadcast_public_game_state()
 

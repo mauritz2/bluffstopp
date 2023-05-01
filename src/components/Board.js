@@ -1,7 +1,8 @@
 
-function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCurrentPlayer, callBluff, passTurn}){
+function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCurrentPlayer, didClientPlayLastCard, callBluff, passTurn}){
 
     let cardValueToDisplay = "";
+    console.log(didClientPlayLastCard);
     if(isActualCardHidden){
         // TODO - currently "hidden" when no card has been played - fix
         cardValueToDisplay = "hidden";
@@ -13,7 +14,7 @@ function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCu
         <>
             <p>Declared: {lastDeclaredCard === null ? "No card played yet" : lastDeclaredCard?.suit + " " + lastDeclaredCard?.value}</p>
             <p>Actual: {cardValueToDisplay}</p>
-            {isActualCardHidden === true ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
+            {(isActualCardHidden === true && didClientPlayLastCard === false) ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
             {isClientCurrentPlayer === true ? <button onClick={() => passTurn()}>Pass</button> : ""}
         </>
     );

@@ -7,6 +7,7 @@ def get_public_game_state():
     public_game_state["lastActualCard"] = _get_last_played_card_if_visible()
     public_game_state["lastDeclaredCard"] = board.get_last_declared_card()
     public_game_state["isActualCardHidden"] = board.get_is_last_card_hidden()
+    public_game_state["playerThatPlayedLastCard"] = turn_state.player_who_played_last_card
     logging.debug(f"Public game state {public_game_state}")
     # TODO - add cards left in deck
     return public_game_state
