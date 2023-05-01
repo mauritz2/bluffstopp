@@ -44,6 +44,6 @@ class Board:
     def is_bluff(self) -> bool:
         if self.last_played_card_actual == None or self.last_declared_card == None:
             raise ValueError(f"Trying to assess bluff without a played and declared card on the board")
-        print(self.last_played_card_actual)
-        print(self.last_declared_card)
-        return True if self.last_played_card_actual != self.last_declared_card else False
+        # TODO - fix so that last_played_card_actual is also a card instance for consitency
+        last_played_card_actual = self.last_played_card_actual.card_short
+        return True if last_played_card_actual != self.last_declared_card else False
