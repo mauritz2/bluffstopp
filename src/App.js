@@ -120,7 +120,8 @@ function App() {
                 <PlayerHand
                       cards={hand}
                       onPlay={playCard}
-                      lastDeclaredCard={lastDeclaredCard}/>
+                      lastDeclaredCard={lastDeclaredCard}
+                      isClientCurrentPlayer={isClientCurrentPlayer}/>
               </ThemeProvider>
                 }/>
         <Route path="/game-over" element={<h1>Game over!</h1>}/>

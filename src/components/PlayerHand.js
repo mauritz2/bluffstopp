@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PlayerCard from "./PlayerCard";
 import DeclareCard from "./DeclareCard";
 
-function PlayerHand({cards, onPlay, lastDeclaredCard}){
+function PlayerHand({cards, onPlay, lastDeclaredCard, isClientCurrentPlayer}){
     // TODO - do the CardClaimSelector need to be tested here or could it be run from App.js?
     const [showCardClaimMenu, setShowCardClaimMenu] = useState(false);
     const [cardActual, setCardActual] = useState({});
@@ -16,9 +16,16 @@ function PlayerHand({cards, onPlay, lastDeclaredCard}){
         setShowCardClaimMenu(false);
     }
 
+    function showPlayButton(){
+        if(showCardClaimMenu === false && isClientCurrentPlayer === true){
+            return true
+        }
+        else return false
+    }
+
     let card_list = []
     cards.forEach((card) => {
-        card_list.push(<div><PlayerCard card={card} onPlay={setCardToBePlayedAndShowClaimMenu} showPlayBtn={!(showCardClaimMenu)} /></div>);
+        card_list.push(<div><PlayerCard card={card} onPlay={setCardToBePlayedAndShowClaimMenu} showPlayBtn={showPlayButton()} /></div>);
     });
 
     function hideBluffMenuAndPlayCard(cardClaimed){
