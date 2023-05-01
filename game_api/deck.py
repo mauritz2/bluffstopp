@@ -4,6 +4,7 @@ from game_api.config import Suits, card_values
 from game_api.card import Card
 
 class Deck:
+    # TODO - add re-shuffling of deck when deck is empty
     def __init__(self):
         self.cards = self._create_deck()
 

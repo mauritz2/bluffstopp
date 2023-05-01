@@ -14,6 +14,8 @@ class TurnState:
         self.player_who_played_last_card = None
         self.players_that_have_passed_this_round = []
         self.is_first_play_of_game = True
+        # TODO - break out game_state into separate class? low cohesion class
+        self.is_game_over = False
 
     # Implenet @property for player_who_played_last_card
 

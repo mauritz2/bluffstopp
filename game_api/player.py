@@ -27,6 +27,9 @@ class Player:
         self.board.add_card_to_board(card_to_play)
         del self.cards_on_hand[card_actual]
 
+    def has_empty_hand(self):
+        return True if len(self.cards_on_hand) == 0 else False
+
     def serialize_hand(self) -> None:
         serialized_cards = []
         for card in self.cards_on_hand.values():

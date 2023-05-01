@@ -5,6 +5,7 @@ import * as Cookies from "./lib/cookies";
 import PlayerHand from "./components/PlayerHand"
 import Board from './components/Board';
 import {ThemeProvider} from '@primer/react'
+import { BrowserRouter, Route, Routes, Navigate} from "react-router-dom"
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
   const [lastDeclaredCard, setLastDeclaredCard] = useState();
   const [isClientCurrentPlayer, setIsClientCurrentPlayer] = useState();
   const [didClientPlayLastCard, setDidClientPlayLastCard] = useState();
+  const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
     
@@ -61,6 +63,11 @@ function App() {
       setHand(privateGameState["playerHand"]);
       setIsClientCurrentPlayer(privateGameState["isClientCurrentPlayer"]);
     });
+
+    socket.on("GAME OVER", (winning_player) => {
+      setIsGameOver(true);
+    })
+
   }, []);
 
   function addPlayer(){
@@ -94,28 +101,38 @@ function App() {
   }
 
   return (
-    <div>
-        <ThemeProvider>
-          <button onClick={() => addPlayer()}>Add players</button>
-          <button onClick={() => startGame()}>Start game</button>
-          <button onClick={() => refreshGameState()}>Refresh game state</button>
-          <p>Players in the game: {players}</p>
-          <p>Current player: {currentPlayerName}</p>
-          <p>Are you the current player? {String(isClientCurrentPlayer)}</p>
-          <Board
-                lastActualCard={lastActualCard}
-                isActualCardHidden={isActualCardHidden}
-                lastDeclaredCard={lastDeclaredCard}
-                isClientCurrentPlayer={isClientCurrentPlayer}
-                didClientPlayLastCard={didClientPlayLastCard}
-                callBluff={callBluff}
-                passTurn={passTurn}/>
-          <PlayerHand
-                cards={hand}
-                onPlay={playCard}
-                lastDeclaredCard={lastDeclaredCard}/>
-    </ThemeProvider>
-    </div>
+    <BrowserRouter>
+      <div>
+            <Routes>
+              <Route path="/" element={
+                isGameOver ? <Navigate to="/game-over" /> :
+              <ThemeProvider>
+                {isGameOver ? <p>The game is over! </p>:""}
+
+                <button onClick={() => addPlayer()}>Add players</button>
+                <button onClick={() => startGame()}>Start game</button>
+                <button onClick={() => refreshGameState()}>Refresh game state</button>
+                <p>Players in the game: {players}</p>
+                <p>Current player: {currentPlayerName}</p>
+                <p>Are you the current player? {String(isClientCurrentPlayer)}</p>
+                <Board
+                      lastActualCard={lastActualCard}
+                      isActualCardHidden={isActualCardHidden}
+                      lastDeclaredCard={lastDeclaredCard}
+                      isClientCurrentPlayer={isClientCurrentPlayer}
+                      didClientPlayLastCard={didClientPlayLastCard}
+                      callBluff={callBluff}
+                      passTurn={passTurn}/>
+                <PlayerHand
+                      cards={hand}
+                      onPlay={playCard}
+                      lastDeclaredCard={lastDeclaredCard}/>
+              </ThemeProvider>
+                }/>
+        <Route path="/game-over" element={<h1>Game over!</h1>}/>
+      </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

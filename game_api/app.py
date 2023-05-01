@@ -70,6 +70,12 @@ def play_card(player_id:str, card_actual:str, card_declared:str):
     force_private_game_state_updates()
     broadcast_public_game_state()
 
+    if player.has_empty_hand():
+        #turn_state.is_game_over = True
+        winning_player_name = player.name
+        socketio.emit("GAME OVER", winning_player_name, broadcast=True)
+
+
 @socketio.on("CALL BLUFF")
 def call_bluff(player_id_calling_bluff:str):
     #if is_invalid_player():
