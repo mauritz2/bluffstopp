@@ -41,18 +41,12 @@ function App() {
       setCurrentPlayerName(publicGameState["currentPlayerName"]);
       setIsActualCardHidden(publicGameState["isActualCardHidden"]);
 
-      console.log("Start of if statement")
-      console.log(publicGameState["playerThatPlayedLastCard"])
-      console.log(player_id)
-
       if(publicGameState["playerThatPlayedLastCard"] === player_id){
         setDidClientPlayLastCard(true)
       }
       else{
         setDidClientPlayLastCard(false)
       }
-
-      console.log(didClientPlayLastCard)
     });
     
     socket.on("REQUEST PRIVATE GAME STATE", () => {

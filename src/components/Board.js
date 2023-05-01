@@ -2,7 +2,6 @@
 function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCurrentPlayer, didClientPlayLastCard, callBluff, passTurn}){
 
     let cardValueToDisplay = "";
-    console.log(didClientPlayLastCard);
     if(isActualCardHidden){
         // TODO - currently "hidden" when no card has been played - fix
         cardValueToDisplay = "hidden";
@@ -10,9 +9,6 @@ function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCu
     else{
         cardValueToDisplay = lastActualCard;
     }
-
-    console.log("Last declared card");
-    console.log(lastDeclaredCard);
 
     function isPossibleToCallBluff(){
         if(isActualCardHidden === true){

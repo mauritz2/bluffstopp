@@ -37,7 +37,6 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
     }
 
     function isFirstCardPlayed(){
-        console.log(lastDeclaredCard);
         return ((lastDeclaredCard === null) ? true : false);
     }
     
