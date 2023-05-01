@@ -74,14 +74,18 @@ def call_bluff(player_id_calling_bluff:str):
     board.show_card()
 
     if board.is_bluff():
-        print("It was a bluff!")
+        logger.debug("It was a bluff - player who bluffed has to draw")
+        player_whos_bluff_got_called = players_in_game.get_player_instance_by_id(turn_state.player_who_played_last_card)
+        player_whos_bluff_got_called.draw_card(NUM_PUNISHMENT_CARDS_TO_DRAW)
+        player_starting_next_round = player_id_calling_bluff        
     else:
-        logger.debug("It's not a bluff - punishing player who called the bluff")
-        print("It was not a bluff - punishing player who called the bluff")
+        logger.debug("It was not a bluff - player that called bluff has to draw")
         player_calling_bluff = players_in_game.get_player_instance_by_id(player_id_calling_bluff)
         player_calling_bluff.draw_card(NUM_PUNISHMENT_CARDS_TO_DRAW)
-        turn_state.reset_player_turns(new_first_player=turn_state.player_who_played_last_card)
-        board.reset_board()
+        player_starting_next_round = turn_state.player_who_played_last_card
+
+    turn_state.reset_player_turns(new_first_player=player_starting_next_round)
+    board.reset_board()
 
     #board.reset_board()
     force_private_game_state_updates() 
