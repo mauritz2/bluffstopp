@@ -80,7 +80,8 @@ def call_bluff(player_id_calling_bluff:str):
         print("It was not a bluff - punishing player who called the bluff")
         player_calling_bluff = players_in_game.get_player_instance_by_id(player_id_calling_bluff)
         player_calling_bluff.draw_card(NUM_PUNISHMENT_CARDS_TO_DRAW)
-        # Add in new turn logic here
+        turn_state.reset_player_turns(new_first_player=turn_state.player_who_played_last_card)
+        board.reset_board()
 
     #board.reset_board()
     force_private_game_state_updates() 
