@@ -4,6 +4,9 @@ import enum
 NUM_STARTING_CARDS = 7
 NUM_PUNISHMENT_CARDS_TO_DRAW = 3
 
+# TODO - rename clovers to clubs
+# TODO - Change naming standard to "9 spades" "king spades" etc.
+
 class Suits(enum.Enum):
     hearts = "hearts"
     spades = "spades"
