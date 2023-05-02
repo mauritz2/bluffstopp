@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import spadesQueen from "../static/spades_queen.png" 
-import { cardImgs } from "../lib/img-importer";
 import Constants from "../Constants";
 
 function PlayerCard({card, onPlay, showPlayBtn}) {
