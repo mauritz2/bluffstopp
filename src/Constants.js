@@ -1,3 +1,5 @@
+import HeartsQueen from "./static/hearts_queen.png"
+
 const Constants = new function() {
     this.CARD_VALUE_MAP = {
         "2":2,
@@ -16,5 +18,8 @@ const Constants = new function() {
     };
     this.CARD_VALUES = Object.keys(this.CARD_VALUE_MAP);
     this.CARD_SUITS = ["diamonds", "spades", "clovers", "hearts"];
+    this.CARD_IMAGES = {
+        "hearts queen":HeartsQueen
+    }
   }
   export default Constants;
