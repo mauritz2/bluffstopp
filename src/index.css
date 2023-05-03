@@ -18,6 +18,10 @@ code {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
+.card-img {
+  max-height: 6em;
+}
+
 /* Card claims menu */
 .radio-btn{
   display: inline;

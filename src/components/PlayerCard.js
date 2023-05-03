@@ -4,10 +4,12 @@ import Constants from "../Constants";
 
 function PlayerCard({card, onPlay, showPlayBtn}) {
 
+    const card_name = card.suit + " " + card.value
+    
     return(
         <>
-                <img src={Constants.CARD_IMAGES["hearts queen"]} />
-                {card.suit + " " + card.value}
+                <img className="card-img" src={Constants.CARD_IMAGES[card_name]} />
+                {card_name}
                 {showPlayBtn === true ? <button onClick={() => onPlay(card)}>Play card</button> : ""}
             </>
         );
