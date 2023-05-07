@@ -40,6 +40,20 @@ import CloversQueen from "./static/clovers_queen.png"
 import CloversKing from "./static/clovers_king.png"
 import CloversAce from "./static/clovers_ace.png"
 
+import Diamonds2 from "./static/diamonds_2.png"
+import Diamonds3 from "./static/diamonds_3.png"
+import Diamonds4 from "./static/diamonds_4.png"
+import Diamonds5 from "./static/diamonds_5.png"
+import Diamonds6 from "./static/diamonds_6.png"
+import Diamonds7 from "./static/diamonds_7.png"
+import Diamonds8 from "./static/diamonds_8.png"
+import Diamonds9 from "./static/diamonds_9.png"
+import Diamonds10 from "./static/diamonds_10.png"
+import DiamondsJack from "./static/diamonds_jack.png"
+import DiamondsQueen from "./static/diamonds_queen.png"
+import DiamondsKing from "./static/diamonds_king.png"
+import DiamondsAce from "./static/diamonds_ace.png"
+
 const Constants = new function() {
     this.CARD_VALUE_MAP = {
         "2":2,
@@ -98,6 +112,20 @@ const Constants = new function() {
         "clovers queen":CloversQueen,
         "clovers king":CloversKing,
         "clovers ace":CloversAce,
+
+        "diamonds 2":Diamonds2,
+        "diamonds 3":Diamonds3,
+        "diamonds 4":Diamonds4,
+        "diamonds 5":Diamonds5,
+        "diamonds 6":Diamonds6,
+        "diamonds 7":Diamonds7,
+        "diamonds 8":Diamonds8,
+        "diamonds 9":Diamonds9,
+        "diamonds 10":Diamonds10,
+        "diamonds jack":DiamondsJack,
+        "diamonds queen":DiamondsQueen,
+        "diamonds king":DiamondsKing,
+        "diamonds ace":DiamondsAce
     }
   }
   export default Constants;
