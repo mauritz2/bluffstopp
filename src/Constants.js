@@ -26,6 +26,20 @@ import SpadesQueen from "./static/spades_queen.png"
 import SpadesKing from "./static/spades_king.png"
 import SpadesAce from "./static/spades_ace.png"
 
+import Clovers2 from "./static/clovers_2.png"
+import Clovers3 from "./static/clovers_3.png"
+import Clovers4 from "./static/clovers_4.png"
+import Clovers5 from "./static/clovers_5.png"
+import Clovers6 from "./static/clovers_6.png"
+import Clovers7 from "./static/clovers_7.png"
+import Clovers8 from "./static/clovers_8.png"
+import Clovers9 from "./static/clovers_9.png"
+import Clovers10 from "./static/clovers_10.png"
+import CloversJack from "./static/clovers_jack.png"
+import CloversQueen from "./static/clovers_queen.png"
+import CloversKing from "./static/clovers_king.png"
+import CloversAce from "./static/clovers_ace.png"
+
 const Constants = new function() {
     this.CARD_VALUE_MAP = {
         "2":2,
@@ -71,6 +85,19 @@ const Constants = new function() {
         "spades queen":SpadesQueen,
         "spades king":SpadesKing,
         "spades ace":SpadesAce,
+        "clovers 2":Clovers2,
+        "clovers 3":Clovers3,
+        "clovers 4":Clovers4,
+        "clovers 5":Clovers5,
+        "clovers 6":Clovers6,
+        "clovers 7":Clovers7,
+        "clovers 8":Clovers8,
+        "clovers 9":Clovers9,
+        "clovers 10":Clovers10,
+        "clovers jack":CloversJack,
+        "clovers queen":CloversQueen,
+        "clovers king":CloversKing,
+        "clovers ace":CloversAce,
     }
   }
   export default Constants;
