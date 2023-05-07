@@ -12,6 +12,20 @@ code {
     monospace;
 }
 
+
+
+/* Board */
+#app {
+  background-color: #f5f5f5;
+}
+
+#board-grid {
+  text-align: center;
+  width: 90%;
+  margin-left: 10%;
+  margin-top: 10%;
+}
+
 /* Player hand */
 #playerHand {
   display: grid;
@@ -19,7 +33,22 @@ code {
 }
 
 .card-img {
-  max-height: 6em;
+  width: 100%;
+  max-width: 5em;
+}
+
+.card-container {
+  max-width: 5em;
+}
+
+.btn {
+  background-color: #555;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
 }
 
 /* Card claims menu */

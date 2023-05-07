@@ -85,9 +85,9 @@ function DeclareCard({cardActual, onPlay, onCancel, lastDeclaredCard}){
                             updateDeclaredCard={updateDeclaredCard}
                             cardActual={cardActual} />
                 </div>
-                <input type="submit" value="Confirm" />
+                <input type="submit" className="btn" value="Confirm" />
                 {errorMessage.length > 0 ? <Flash variant="danger">{errorMessage}</Flash> : "" }
-                <input type="button" value="Cancel" onClick={() => onCancel()} />
+                <input type="button" className="btn" value="Cancel" onClick={() => onCancel()} />
             </form>
         </>
     );

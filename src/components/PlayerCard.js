@@ -7,11 +7,10 @@ function PlayerCard({card, onPlay, showPlayBtn}) {
     const card_name = card.suit + " " + card.value
     
     return(
-        <>
-                <img className="card-img" src={Constants.CARD_IMAGES[card_name]} />
-                {card_name}
-                {showPlayBtn === true ? <button onClick={() => onPlay(card)}>Play card</button> : ""}
-            </>
+        <div className="card-contianer">
+            <img className="card-img" src={Constants.CARD_IMAGES[card_name]} />
+            {showPlayBtn === true ? <button className="btn play-card-btn" onClick={() => onPlay(card)}>Play card</button> : ""}
+        </div>
         );
     }
 

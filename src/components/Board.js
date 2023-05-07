@@ -1,3 +1,4 @@
+import Constants from "../Constants";
 
 function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCurrentPlayer, didClientPlayLastCard, callBluff, passTurn}){
 
@@ -32,10 +33,10 @@ function Board({lastActualCard, isActualCardHidden, lastDeclaredCard, isClientCu
 
     return(
         <>
-            <p>Declared: {lastDeclaredCard === null ? "No card played yet" : lastDeclaredCard?.suit + " " + lastDeclaredCard?.value}</p>
+            <p>Declared: {lastDeclaredCard === null ? "No card played yet" : <img className="card-img" src={Constants.CARD_IMAGES[lastDeclaredCard?.suit + " " + lastDeclaredCard?.value]}/> }</p>
             <p>Actual: {cardValueToDisplay}</p>
-            {isPossibleToCallBluff() ? <button onClick={() => callBluff()}>Call bluff</button> : ""}
-            {isPossibleToPass() ? <button onClick={() => passTurn()}>Pass</button> : ""}
+            {isPossibleToCallBluff() ? <button className="btn" onClick={() => callBluff()}>Call bluff</button> : ""}
+            {isPossibleToPass() ? <button className="btn" onClick={() => passTurn()}>Pass</button> : ""}
         </>
     );
 }

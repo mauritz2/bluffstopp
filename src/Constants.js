@@ -112,7 +112,6 @@ const Constants = new function() {
         "clovers queen":CloversQueen,
         "clovers king":CloversKing,
         "clovers ace":CloversAce,
-
         "diamonds 2":Diamonds2,
         "diamonds 3":Diamonds3,
         "diamonds 4":Diamonds4,

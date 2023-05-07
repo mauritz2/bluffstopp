@@ -96,16 +96,16 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <div id="board-grid">
             <Routes>
               <Route path="/" element={
                 isGameOver ? <Navigate to="/game-over" /> :
               <ThemeProvider>
                 {isGameOver ? <p>The game is over! </p>:""}
 
-                <button onClick={() => addPlayer()}>Add players</button>
-                <button onClick={() => startGame()}>Start game</button>
-                <button onClick={() => refreshGameState()}>Refresh game state</button>
+                <button className="btn" onClick={() => addPlayer()}>Add players</button>
+                <button className="btn" onClick={() => startGame()}>Start game</button>
+                <button className="btn" onClick={() => refreshGameState()}>Refresh game state</button>
                 <p>Players in the game: {players}</p>
                 <p>Current player: {currentPlayerName}</p>
                 <p>Are you the current player? {String(isClientCurrentPlayer)}</p>
